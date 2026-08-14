@@ -3,7 +3,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class ApiClient {
   static const String baseUrl =
-      'https://bloodlessly-unpolitical-floria.ngrok-free.dev/api/v1';
+      // 'https://bloodlessly-unpolitical-floria.ngrok-free.dev/api/v1';
+      'https://310f-197-186-60-82.ngrok-free.app/api/v1';
   final Dio dio;
   final FlutterSecureStorage storage;
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../core/auth/auth_provider.dart';
 import '../../../core/sync/sync_provider.dart';
 import '../../../core/database/app_database.dart';

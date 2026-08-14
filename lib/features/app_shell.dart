@@ -10,7 +10,7 @@ import 'settings/presentation/settings_screen.dart';
 
 import 'deals/presentation/deals_screen.dart';
 
-import 'package:lucide_icons/lucide_icons.dart';
+import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});

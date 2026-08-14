@@ -8,7 +8,9 @@ plugins {
 android {
     namespace = "com.zetuapps.zetucrm"
     compileSdk = 37
-    ndkVersion = flutter.ndkVersion
+    // ndkVersion = flutter.ndkVersion
+    ndkVersion = "29.0.13113456"
+
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
