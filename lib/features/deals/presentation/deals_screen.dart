@@ -81,119 +81,148 @@ class _DealsScreenState extends ConsumerState<DealsScreen> {
               );
             }
 
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(16),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: _stages.map((stage) {
-                  final stageDeals = deals
-                      .where(
-                        (d) =>
-                            d.stageName == stage ||
-                            (stage == 'Lead' &&
-                                ![
-                                  'Contacted',
-                                  'Proposal',
-                                  'Negotiation',
-                                  'Won',
-                                  'Lost',
-                                ].contains(d.stageName)),
-                      )
-                      .toList();
-                  final totalVal = stageDeals.fold<double>(
-                    0,
-                    (sum, d) => sum + d.amount,
-                  );
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final columnHeight = constraints.maxHeight - 32;
 
-                  return Container(
-                    width: 260,
-                    margin: const EdgeInsets.only(right: 12),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkCard : AppColors.grey100,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: isDark
-                            ? AppColors.darkBorder
-                            : AppColors.grey300,
-                      ),
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  padding: const EdgeInsets.all(16),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: _stages.map((stage) {
+                      final stageDeals = deals
+                          .where(
+                            (d) =>
+                                d.stageName == stage ||
+                                (stage == 'Lead' &&
+                                    ![
+                                      'Contacted',
+                                      'Proposal',
+                                      'Negotiation',
+                                      'Won',
+                                      'Lost',
+                                    ].contains(d.stageName)),
+                          )
+                          .toList();
+                      final totalVal = stageDeals.fold<double>(
+                        0,
+                        (sum, d) => sum + d.amount,
+                      );
+
+                      return Container(
+                        width: 260,
+                        height: columnHeight > 100 ? columnHeight : null,
+                        margin: const EdgeInsets.only(right: 12),
+                        decoration: BoxDecoration(
+                          color: isDark ? AppColors.darkCard : AppColors.grey100,
+                          borderRadius: BorderRadius.circular(16),
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.darkBorder
+                                : AppColors.grey300,
+                          ),
+                        ),
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  stage.toUpperCase(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 12,
+                                  ),
+                                ),
+                                Chip(
+                                  label: Text('${stageDeals.length}'),
+                                  materialTapTargetSize:
+                                      MaterialTapTargetSize.shrinkWrap,
+                                  visualDensity: VisualDensity.compact,
+                                ),
+                              ],
+                            ),
                             Text(
-                              stage.toUpperCase(),
+                              '\$${totalVal.toStringAsFixed(0)} total',
                               style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 12,
+                                fontSize: 11,
+                                color: AppColors.grey500,
                               ),
                             ),
-                            Chip(
-                              label: Text('${stageDeals.length}'),
-                              materialTapTargetSize:
-                                  MaterialTapTargetSize.shrinkWrap,
-                              visualDensity: VisualDensity.compact,
+                            const Divider(),
+                            Expanded(
+                              child: stageDeals.isEmpty
+                                  ? Center(
+                                      child: Text(
+                                        'No deals in this stage',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: isDark
+                                              ? AppColors.grey600
+                                              : AppColors.grey400,
+                                        ),
+                                      ),
+                                    )
+                                  : ListView.builder(
+                                      padding: EdgeInsets.zero,
+                                      itemCount: stageDeals.length,
+                                      itemBuilder: (context, index) {
+                                        final deal = stageDeals[index];
+                                        return Padding(
+                                          padding: const EdgeInsets.only(bottom: 8),
+                                          child: AppCard(
+                                            onTap: () => _openDealForm(deal),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  deal.title,
+                                                  style: const TextStyle(
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 13,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 4),
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    Text(
+                                                      '\$${deal.amount.toStringAsFixed(0)}',
+                                                      style: const TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: AppColors.success,
+                                                      ),
+                                                    ),
+                                                    Text(
+                                                      deal.status.toUpperCase(),
+                                                      style: const TextStyle(
+                                                        fontSize: 10,
+                                                        color: AppColors.grey500,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                    ),
                             ),
                           ],
                         ),
-                        Text(
-                          '\$${totalVal.toStringAsFixed(0)} total',
-                          style: const TextStyle(
-                            fontSize: 11,
-                            color: AppColors.grey500,
-                          ),
-                        ),
-                        const Divider(),
-                        ...stageDeals.map((deal) {
-                          return Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: AppCard(
-                              onTap: () => _openDealForm(deal),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    deal.title,
-                                    style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 13,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Text(
-                                        '\$${deal.amount.toStringAsFixed(0)}',
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.success,
-                                        ),
-                                      ),
-                                      Text(
-                                        deal.status.toUpperCase(),
-                                        style: const TextStyle(
-                                          fontSize: 10,
-                                          color: AppColors.grey500,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        }),
-                      ],
-                    ),
-                  );
-                }).toList(),
-              ),
+                      );
+                    }).toList(),
+                  ),
+                );
+              },
             );
           },
         ),
@@ -316,7 +345,7 @@ class _DealFormSheetState extends ConsumerState<_DealFormSheet> {
                     builder: (context, snapshot) {
                       final contacts = snapshot.data ?? [];
                       return DropdownButtonFormField<int?>(
-                        value: _selectedContactId,
+                        initialValue: _selectedContactId,
                         decoration: const InputDecoration(
                           labelText: 'Linked Contact',
                         ),
@@ -339,7 +368,7 @@ class _DealFormSheetState extends ConsumerState<_DealFormSheet> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: _stageName,
+                    initialValue: _stageName,
                     decoration: const InputDecoration(labelText: 'Stage'),
                     items:
                         const [
@@ -358,7 +387,7 @@ class _DealFormSheetState extends ConsumerState<_DealFormSheet> {
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: _status,
+                    initialValue: _status,
                     decoration: const InputDecoration(labelText: 'Status'),
                     items: const [
                       DropdownMenuItem(value: 'open', child: Text('Open')),

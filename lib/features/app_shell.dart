@@ -9,6 +9,7 @@ import 'tasks/presentation/tasks_screen.dart';
 import 'settings/presentation/settings_screen.dart';
 
 import 'deals/presentation/deals_screen.dart';
+import 'finance/presentation/finance_screen.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -26,6 +27,7 @@ class _AppShellState extends ConsumerState<AppShell> {
     DashboardScreen(),
     ContactsScreen(),
     DealsScreen(),
+    FinanceScreen(),
     ActivitiesScreen(),
     TasksScreen(),
     SettingsScreen(),
@@ -56,6 +58,8 @@ class _AppShellState extends ConsumerState<AppShell> {
         selectedItemColor: const Color(0xFF1B59F8),
         unselectedItemColor: isDark ? Colors.white38 : const Color(0xFF98A2B3),
         type: BottomNavigationBarType.fixed,
+        selectedFontSize: 11,
+        unselectedFontSize: 10,
         onTap: (index) {
           setState(() {
             _currentIndex = index;
@@ -73,6 +77,10 @@ class _AppShellState extends ConsumerState<AppShell> {
           BottomNavigationBarItem(
             icon: Icon(LucideIcons.briefcase),
             label: 'Deals',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(LucideIcons.landmark),
+            label: 'Finance',
           ),
           BottomNavigationBarItem(
             icon: Icon(LucideIcons.phoneCall),

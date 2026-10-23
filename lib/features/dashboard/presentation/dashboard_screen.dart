@@ -7,6 +7,9 @@ import '../../../core/database/app_database.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
 import '../../../shared/components/unified_form.dart';
+import '../../finance/presentation/finance_screen.dart';
+import '../../finance/presentation/sheets/expense_form_sheet.dart';
+import '../../finance/presentation/sheets/requisition_form_sheet.dart';
 import 'dashboard_provider.dart';
 import 'package:drift/drift.dart' hide Column;
 
@@ -545,6 +548,27 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               onTap: () => _showNewLeadSheet(context),
             ),
             _buildQuickActionButton(
+              label: '+ Expense',
+              icon: LucideIcons.receipt,
+              isDark: isDark,
+              onTap: () => ExpenseFormSheet.show(context),
+            ),
+            _buildQuickActionButton(
+              label: 'Requisition',
+              icon: LucideIcons.filePlus,
+              isDark: isDark,
+              onTap: () => RequisitionFormSheet.show(context),
+            ),
+            _buildQuickActionButton(
+              label: 'Finance Hub',
+              icon: LucideIcons.landmark,
+              isDark: isDark,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FinanceScreen()),
+              ),
+            ),
+            _buildQuickActionButton(
               label: 'Add Note',
               icon: LucideIcons.fileText,
               isDark: isDark,
@@ -561,6 +585,15 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               icon: LucideIcons.messageSquare,
               isDark: isDark,
               onTap: () => _showLogActivitySheet(context),
+            ),
+            _buildQuickActionButton(
+              label: 'Ledger',
+              icon: LucideIcons.bookOpen,
+              isDark: isDark,
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const FinanceScreen(initialTabIndex: 2)),
+              ),
             ),
           ],
         ),

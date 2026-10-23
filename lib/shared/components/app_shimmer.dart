@@ -18,12 +18,20 @@ class AppShimmer extends StatelessWidget {
   }
 
   /// Shimmer placeholder item for Card lists (matching the reference image)
-  static Widget cardListShimmer({required bool isDark, int count = 4}) {
+  static Widget cardListShimmer({
+    required bool isDark,
+    int count = 4,
+    bool shrinkWrap = true,
+    ScrollPhysics physics = const NeverScrollableScrollPhysics(),
+    EdgeInsetsGeometry? padding,
+  }) {
     return ListView.separated(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+      shrinkWrap: shrinkWrap,
+      physics: physics,
+      padding: padding ?? const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       itemCount: count,
-      separatorBuilder: (_, __) => const SizedBox(height: 14),
-      itemBuilder: (_, __) => AppShimmer(
+      separatorBuilder: (_, index) => const SizedBox(height: 14),
+      itemBuilder: (_, index) => AppShimmer(
         child: Container(
           height: 125,
           decoration: BoxDecoration(

@@ -39,14 +39,26 @@ class UserProfile {
 class CompanyItem {
   final String id;
   final String name;
+  final String currency;
+  final double exchangeRateUsdTzs;
 
-  CompanyItem({required this.id, required this.name});
+  CompanyItem({
+    required this.id,
+    required this.name,
+    this.currency = 'TZS',
+    this.exchangeRateUsdTzs = 2600.0,
+  });
 
   factory CompanyItem.fromJson(Map<String, dynamic> json) {
     final rawId = json['id'];
+    final rawRate = json['exchange_rate_usd_tzs'];
     return CompanyItem(
       id: rawId?.toString() ?? '0',
       name: json['name'] ?? '',
+      currency: json['currency']?.toString().toUpperCase() ?? 'TZS',
+      exchangeRateUsdTzs: rawRate is num
+          ? rawRate.toDouble()
+          : (double.tryParse(rawRate?.toString() ?? '') ?? 2600.0),
     );
   }
 }
