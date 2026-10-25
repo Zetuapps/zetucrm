@@ -199,23 +199,39 @@ class AuthNotifier extends Notifier<AuthState> {
 
       final res = await apiClient.dio.post('/auth/google', data: {
         'id_token': idToken,
+        'email': account.email,
+        'google_id': account.id,
+        'display_name': account.displayName,
+        'photo_url': account.photoUrl,
       });
 
-      if (res.statusCode == 200) {
-        final token = res.data['token'];
-        await _storage.write(key: 'sanctum_token', value: token);
-        await checkLoginStatus();
-        state = state.copyWith(isLoading: false);
-        return true;
+      if (res.statusCode == 200 && res.data != null) {
+        final token = res.data['token'] ?? res.data['access_token'];
+        if (token != null) {
+          await _storage.write(key: 'sanctum_token', value: token.toString());
+          await checkLoginStatus();
+          state = state.copyWith(isLoading: false);
+          return true;
+        }
       }
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Google authentication failed to establish a session.',
+      );
+      return false;
+    } on DioException catch (e) {
+      final msg = e.response?.data?['message'] ??
+          'Google authentication failed (${e.response?.statusCode ?? "Network error"}).';
+      state = state.copyWith(isLoading: false, errorMessage: msg);
+      return false;
     } catch (e) {
       state = state.copyWith(
         isLoading: false,
         errorMessage: 'Google sign in failed. Please try again.',
       );
+      return false;
     }
-    state = state.copyWith(isLoading: false);
-    return false;
   }
 
   Future<void> selectCompany(CompanyItem company) async {

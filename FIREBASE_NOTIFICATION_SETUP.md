@@ -178,3 +178,44 @@ php artisan tinker --execute="\Modules\Finance\App\Jobs\GenerateMonthlyFinancial
 | **Requisition Approval Request** | — | ✅ | ✅ |
 | **Requisition Status Change** | — | ✅ | ✅ |
 | **Any EmailChannel Alert** | ✅ | ✅ (Mirrored) | ✅ (Mirrored) |
+
+---
+
+## 🔐 7. Google Sign-In ("Continue with Google") Configuration
+
+The mobile app now shares the exact same Google authentication flow as the web CRM:
+- Matches existing accounts by Google ID (`provider_id`) or `email`
+- Automatically links Google to existing accounts
+- Auto-initializes new accounts with their Google profile and default workspace
+- Returns Sanctum Bearer token for seamless API authentication
+
+### A. Android Setup (SHA-1 Fingerprint):
+1. In Firebase Console -> **Project settings** -> **Your apps** -> Select the **Android** app (`com.zetuapps.zetucrm`).
+2. Click **Add fingerprint**.
+3. Generate your debug SHA-1 key on Mac:
+   ```bash
+   keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android -keypass android
+   ```
+4. Copy the **SHA1** hex fingerprint and paste it into Firebase Console.
+5. Re-download `google-services.json` and replace `/Volumes/Dephel01/TASHICO/PROJECTS/WORKS/ZETUAPPS/zetucrm/android/app/google-services.json`.
+
+### B. iOS Setup (URL Scheme):
+1. In Firebase Console -> **Project settings** -> **Your apps** -> Select the **iOS** app (`com.zetuapps.zetucrm`).
+2. Download `GoogleService-Info.plist` and place in `ios/Runner/`.
+3. Open `GoogleService-Info.plist`, locate the key `<string>com.googleusercontent.apps....</string>` under `<key>REVERSED_CLIENT_ID</key>`.
+4. In `ios/Runner/Info.plist`, ensure the URL Scheme is declared:
+   ```xml
+   <key>CFBundleURLTypes</key>
+   <array>
+       <dict>
+           <key>CFBundleTypeRole</key>
+           <string>Editor</string>
+           <key>CFBundleURLSchemes</key>
+           <array>
+               <!-- Replace with your REVERSED_CLIENT_ID from GoogleService-Info.plist -->
+               <string>com.googleusercontent.apps.YOUR_CLIENT_ID</string>
+           </array>
+       </dict>
+   </array>
+   ```
+

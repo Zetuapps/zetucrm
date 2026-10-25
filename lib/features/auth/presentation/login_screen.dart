@@ -127,7 +127,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
                 // Google Sign-In CTA
                 AppButton(
-                  label: 'Sign in with Google',
+                  label: 'Continue with Google',
                   variant: AppButtonVariant.outlined,
                   icon: Icons.g_mobiledata_rounded,
                   onPressed: authState.isLoading

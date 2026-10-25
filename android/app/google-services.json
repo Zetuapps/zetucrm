@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1025747966131",
+    "project_id": "carhireapp-63006",
+    "storage_bucket": "carhireapp-63006.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025747966131:android:f32ab45dfca4bbc797f8c6",
+        "android_client_info": {
+          "package_name": "com.zetuapps.zetucrm"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAVB8l0i55TdpeFg-mjqzOdUVzOrGdbd8Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
