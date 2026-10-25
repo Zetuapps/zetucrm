@@ -220,6 +220,90 @@ class $ContactsTableTable extends ContactsTable
     ),
     defaultValue: const Constant(true),
   );
+  static const VerificationMeta _countryMeta = const VerificationMeta(
+    'country',
+  );
+  @override
+  late final GeneratedColumn<String> country = GeneratedColumn<String>(
+    'country',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _stateMeta = const VerificationMeta('state');
+  @override
+  late final GeneratedColumn<String> state = GeneratedColumn<String>(
+    'state',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _cityMeta = const VerificationMeta('city');
+  @override
+  late final GeneratedColumn<String> city = GeneratedColumn<String>(
+    'city',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _addressMeta = const VerificationMeta(
+    'address',
+  );
+  @override
+  late final GeneratedColumn<String> address = GeneratedColumn<String>(
+    'address',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _postalCodeMeta = const VerificationMeta(
+    'postalCode',
+  );
+  @override
+  late final GeneratedColumn<String> postalCode = GeneratedColumn<String>(
+    'postal_code',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _websiteMeta = const VerificationMeta(
+    'website',
+  );
+  @override
+  late final GeneratedColumn<String> website = GeneratedColumn<String>(
+    'website',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _lifecycleStageIdMeta = const VerificationMeta(
+    'lifecycleStageId',
+  );
+  @override
+  late final GeneratedColumn<String> lifecycleStageId = GeneratedColumn<String>(
+    'lifecycle_stage_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _customFieldsJsonMeta = const VerificationMeta(
+    'customFieldsJson',
+  );
+  @override
+  late final GeneratedColumn<String> customFieldsJson = GeneratedColumn<String>(
+    'custom_fields_json',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _localUpdatedAtMeta = const VerificationMeta(
     'localUpdatedAt',
   );
@@ -265,6 +349,14 @@ class $ContactsTableTable extends ContactsTable
     isCustomer,
     notes,
     isActive,
+    country,
+    state,
+    city,
+    address,
+    postalCode,
+    website,
+    lifecycleStageId,
+    customFieldsJson,
     localUpdatedAt,
     serverUpdatedAt,
   ];
@@ -399,6 +491,60 @@ class $ContactsTableTable extends ContactsTable
         isActive.isAcceptableOrUnknown(data['is_active']!, _isActiveMeta),
       );
     }
+    if (data.containsKey('country')) {
+      context.handle(
+        _countryMeta,
+        country.isAcceptableOrUnknown(data['country']!, _countryMeta),
+      );
+    }
+    if (data.containsKey('state')) {
+      context.handle(
+        _stateMeta,
+        state.isAcceptableOrUnknown(data['state']!, _stateMeta),
+      );
+    }
+    if (data.containsKey('city')) {
+      context.handle(
+        _cityMeta,
+        city.isAcceptableOrUnknown(data['city']!, _cityMeta),
+      );
+    }
+    if (data.containsKey('address')) {
+      context.handle(
+        _addressMeta,
+        address.isAcceptableOrUnknown(data['address']!, _addressMeta),
+      );
+    }
+    if (data.containsKey('postal_code')) {
+      context.handle(
+        _postalCodeMeta,
+        postalCode.isAcceptableOrUnknown(data['postal_code']!, _postalCodeMeta),
+      );
+    }
+    if (data.containsKey('website')) {
+      context.handle(
+        _websiteMeta,
+        website.isAcceptableOrUnknown(data['website']!, _websiteMeta),
+      );
+    }
+    if (data.containsKey('lifecycle_stage_id')) {
+      context.handle(
+        _lifecycleStageIdMeta,
+        lifecycleStageId.isAcceptableOrUnknown(
+          data['lifecycle_stage_id']!,
+          _lifecycleStageIdMeta,
+        ),
+      );
+    }
+    if (data.containsKey('custom_fields_json')) {
+      context.handle(
+        _customFieldsJsonMeta,
+        customFieldsJson.isAcceptableOrUnknown(
+          data['custom_fields_json']!,
+          _customFieldsJsonMeta,
+        ),
+      );
+    }
     if (data.containsKey('local_updated_at')) {
       context.handle(
         _localUpdatedAtMeta,
@@ -504,6 +650,38 @@ class $ContactsTableTable extends ContactsTable
         DriftSqlType.bool,
         data['${effectivePrefix}is_active'],
       )!,
+      country: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}country'],
+      ),
+      state: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}state'],
+      ),
+      city: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}city'],
+      ),
+      address: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}address'],
+      ),
+      postalCode: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}postal_code'],
+      ),
+      website: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}website'],
+      ),
+      lifecycleStageId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}lifecycle_stage_id'],
+      ),
+      customFieldsJson: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}custom_fields_json'],
+      ),
       localUpdatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
         data['${effectivePrefix}local_updated_at'],
@@ -541,6 +719,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
   final bool isCustomer;
   final String? notes;
   final bool isActive;
+  final String? country;
+  final String? state;
+  final String? city;
+  final String? address;
+  final String? postalCode;
+  final String? website;
+  final String? lifecycleStageId;
+  final String? customFieldsJson;
   final DateTime localUpdatedAt;
   final DateTime? serverUpdatedAt;
   const ContactEntry({
@@ -563,6 +749,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
     required this.isCustomer,
     this.notes,
     required this.isActive,
+    this.country,
+    this.state,
+    this.city,
+    this.address,
+    this.postalCode,
+    this.website,
+    this.lifecycleStageId,
+    this.customFieldsJson,
     required this.localUpdatedAt,
     this.serverUpdatedAt,
   });
@@ -614,6 +808,30 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
       map['notes'] = Variable<String>(notes);
     }
     map['is_active'] = Variable<bool>(isActive);
+    if (!nullToAbsent || country != null) {
+      map['country'] = Variable<String>(country);
+    }
+    if (!nullToAbsent || state != null) {
+      map['state'] = Variable<String>(state);
+    }
+    if (!nullToAbsent || city != null) {
+      map['city'] = Variable<String>(city);
+    }
+    if (!nullToAbsent || address != null) {
+      map['address'] = Variable<String>(address);
+    }
+    if (!nullToAbsent || postalCode != null) {
+      map['postal_code'] = Variable<String>(postalCode);
+    }
+    if (!nullToAbsent || website != null) {
+      map['website'] = Variable<String>(website);
+    }
+    if (!nullToAbsent || lifecycleStageId != null) {
+      map['lifecycle_stage_id'] = Variable<String>(lifecycleStageId);
+    }
+    if (!nullToAbsent || customFieldsJson != null) {
+      map['custom_fields_json'] = Variable<String>(customFieldsJson);
+    }
     map['local_updated_at'] = Variable<DateTime>(localUpdatedAt);
     if (!nullToAbsent || serverUpdatedAt != null) {
       map['server_updated_at'] = Variable<DateTime>(serverUpdatedAt);
@@ -664,6 +882,28 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
           ? const Value.absent()
           : Value(notes),
       isActive: Value(isActive),
+      country: country == null && nullToAbsent
+          ? const Value.absent()
+          : Value(country),
+      state: state == null && nullToAbsent
+          ? const Value.absent()
+          : Value(state),
+      city: city == null && nullToAbsent ? const Value.absent() : Value(city),
+      address: address == null && nullToAbsent
+          ? const Value.absent()
+          : Value(address),
+      postalCode: postalCode == null && nullToAbsent
+          ? const Value.absent()
+          : Value(postalCode),
+      website: website == null && nullToAbsent
+          ? const Value.absent()
+          : Value(website),
+      lifecycleStageId: lifecycleStageId == null && nullToAbsent
+          ? const Value.absent()
+          : Value(lifecycleStageId),
+      customFieldsJson: customFieldsJson == null && nullToAbsent
+          ? const Value.absent()
+          : Value(customFieldsJson),
       localUpdatedAt: Value(localUpdatedAt),
       serverUpdatedAt: serverUpdatedAt == null && nullToAbsent
           ? const Value.absent()
@@ -696,6 +936,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
       isCustomer: serializer.fromJson<bool>(json['isCustomer']),
       notes: serializer.fromJson<String?>(json['notes']),
       isActive: serializer.fromJson<bool>(json['isActive']),
+      country: serializer.fromJson<String?>(json['country']),
+      state: serializer.fromJson<String?>(json['state']),
+      city: serializer.fromJson<String?>(json['city']),
+      address: serializer.fromJson<String?>(json['address']),
+      postalCode: serializer.fromJson<String?>(json['postalCode']),
+      website: serializer.fromJson<String?>(json['website']),
+      lifecycleStageId: serializer.fromJson<String?>(json['lifecycleStageId']),
+      customFieldsJson: serializer.fromJson<String?>(json['customFieldsJson']),
       localUpdatedAt: serializer.fromJson<DateTime>(json['localUpdatedAt']),
       serverUpdatedAt: serializer.fromJson<DateTime?>(json['serverUpdatedAt']),
     );
@@ -723,6 +971,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
       'isCustomer': serializer.toJson<bool>(isCustomer),
       'notes': serializer.toJson<String?>(notes),
       'isActive': serializer.toJson<bool>(isActive),
+      'country': serializer.toJson<String?>(country),
+      'state': serializer.toJson<String?>(state),
+      'city': serializer.toJson<String?>(city),
+      'address': serializer.toJson<String?>(address),
+      'postalCode': serializer.toJson<String?>(postalCode),
+      'website': serializer.toJson<String?>(website),
+      'lifecycleStageId': serializer.toJson<String?>(lifecycleStageId),
+      'customFieldsJson': serializer.toJson<String?>(customFieldsJson),
       'localUpdatedAt': serializer.toJson<DateTime>(localUpdatedAt),
       'serverUpdatedAt': serializer.toJson<DateTime?>(serverUpdatedAt),
     };
@@ -748,6 +1004,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
     bool? isCustomer,
     Value<String?> notes = const Value.absent(),
     bool? isActive,
+    Value<String?> country = const Value.absent(),
+    Value<String?> state = const Value.absent(),
+    Value<String?> city = const Value.absent(),
+    Value<String?> address = const Value.absent(),
+    Value<String?> postalCode = const Value.absent(),
+    Value<String?> website = const Value.absent(),
+    Value<String?> lifecycleStageId = const Value.absent(),
+    Value<String?> customFieldsJson = const Value.absent(),
     DateTime? localUpdatedAt,
     Value<DateTime?> serverUpdatedAt = const Value.absent(),
   }) => ContactEntry(
@@ -772,6 +1036,18 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
     isCustomer: isCustomer ?? this.isCustomer,
     notes: notes.present ? notes.value : this.notes,
     isActive: isActive ?? this.isActive,
+    country: country.present ? country.value : this.country,
+    state: state.present ? state.value : this.state,
+    city: city.present ? city.value : this.city,
+    address: address.present ? address.value : this.address,
+    postalCode: postalCode.present ? postalCode.value : this.postalCode,
+    website: website.present ? website.value : this.website,
+    lifecycleStageId: lifecycleStageId.present
+        ? lifecycleStageId.value
+        : this.lifecycleStageId,
+    customFieldsJson: customFieldsJson.present
+        ? customFieldsJson.value
+        : this.customFieldsJson,
     localUpdatedAt: localUpdatedAt ?? this.localUpdatedAt,
     serverUpdatedAt: serverUpdatedAt.present
         ? serverUpdatedAt.value
@@ -810,6 +1086,20 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
           : this.isCustomer,
       notes: data.notes.present ? data.notes.value : this.notes,
       isActive: data.isActive.present ? data.isActive.value : this.isActive,
+      country: data.country.present ? data.country.value : this.country,
+      state: data.state.present ? data.state.value : this.state,
+      city: data.city.present ? data.city.value : this.city,
+      address: data.address.present ? data.address.value : this.address,
+      postalCode: data.postalCode.present
+          ? data.postalCode.value
+          : this.postalCode,
+      website: data.website.present ? data.website.value : this.website,
+      lifecycleStageId: data.lifecycleStageId.present
+          ? data.lifecycleStageId.value
+          : this.lifecycleStageId,
+      customFieldsJson: data.customFieldsJson.present
+          ? data.customFieldsJson.value
+          : this.customFieldsJson,
       localUpdatedAt: data.localUpdatedAt.present
           ? data.localUpdatedAt.value
           : this.localUpdatedAt,
@@ -841,6 +1131,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
           ..write('isCustomer: $isCustomer, ')
           ..write('notes: $notes, ')
           ..write('isActive: $isActive, ')
+          ..write('country: $country, ')
+          ..write('state: $state, ')
+          ..write('city: $city, ')
+          ..write('address: $address, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('website: $website, ')
+          ..write('lifecycleStageId: $lifecycleStageId, ')
+          ..write('customFieldsJson: $customFieldsJson, ')
           ..write('localUpdatedAt: $localUpdatedAt, ')
           ..write('serverUpdatedAt: $serverUpdatedAt')
           ..write(')'))
@@ -868,6 +1166,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
     isCustomer,
     notes,
     isActive,
+    country,
+    state,
+    city,
+    address,
+    postalCode,
+    website,
+    lifecycleStageId,
+    customFieldsJson,
     localUpdatedAt,
     serverUpdatedAt,
   ]);
@@ -894,6 +1200,14 @@ class ContactEntry extends DataClass implements Insertable<ContactEntry> {
           other.isCustomer == this.isCustomer &&
           other.notes == this.notes &&
           other.isActive == this.isActive &&
+          other.country == this.country &&
+          other.state == this.state &&
+          other.city == this.city &&
+          other.address == this.address &&
+          other.postalCode == this.postalCode &&
+          other.website == this.website &&
+          other.lifecycleStageId == this.lifecycleStageId &&
+          other.customFieldsJson == this.customFieldsJson &&
           other.localUpdatedAt == this.localUpdatedAt &&
           other.serverUpdatedAt == this.serverUpdatedAt);
 }
@@ -918,6 +1232,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
   final Value<bool> isCustomer;
   final Value<String?> notes;
   final Value<bool> isActive;
+  final Value<String?> country;
+  final Value<String?> state;
+  final Value<String?> city;
+  final Value<String?> address;
+  final Value<String?> postalCode;
+  final Value<String?> website;
+  final Value<String?> lifecycleStageId;
+  final Value<String?> customFieldsJson;
   final Value<DateTime> localUpdatedAt;
   final Value<DateTime?> serverUpdatedAt;
   const ContactsTableCompanion({
@@ -940,6 +1262,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
     this.isCustomer = const Value.absent(),
     this.notes = const Value.absent(),
     this.isActive = const Value.absent(),
+    this.country = const Value.absent(),
+    this.state = const Value.absent(),
+    this.city = const Value.absent(),
+    this.address = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    this.website = const Value.absent(),
+    this.lifecycleStageId = const Value.absent(),
+    this.customFieldsJson = const Value.absent(),
     this.localUpdatedAt = const Value.absent(),
     this.serverUpdatedAt = const Value.absent(),
   });
@@ -963,6 +1293,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
     this.isCustomer = const Value.absent(),
     this.notes = const Value.absent(),
     this.isActive = const Value.absent(),
+    this.country = const Value.absent(),
+    this.state = const Value.absent(),
+    this.city = const Value.absent(),
+    this.address = const Value.absent(),
+    this.postalCode = const Value.absent(),
+    this.website = const Value.absent(),
+    this.lifecycleStageId = const Value.absent(),
+    this.customFieldsJson = const Value.absent(),
     required DateTime localUpdatedAt,
     this.serverUpdatedAt = const Value.absent(),
   }) : firstName = Value(firstName),
@@ -987,6 +1325,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
     Expression<bool>? isCustomer,
     Expression<String>? notes,
     Expression<bool>? isActive,
+    Expression<String>? country,
+    Expression<String>? state,
+    Expression<String>? city,
+    Expression<String>? address,
+    Expression<String>? postalCode,
+    Expression<String>? website,
+    Expression<String>? lifecycleStageId,
+    Expression<String>? customFieldsJson,
     Expression<DateTime>? localUpdatedAt,
     Expression<DateTime>? serverUpdatedAt,
   }) {
@@ -1010,6 +1356,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
       if (isCustomer != null) 'is_customer': isCustomer,
       if (notes != null) 'notes': notes,
       if (isActive != null) 'is_active': isActive,
+      if (country != null) 'country': country,
+      if (state != null) 'state': state,
+      if (city != null) 'city': city,
+      if (address != null) 'address': address,
+      if (postalCode != null) 'postal_code': postalCode,
+      if (website != null) 'website': website,
+      if (lifecycleStageId != null) 'lifecycle_stage_id': lifecycleStageId,
+      if (customFieldsJson != null) 'custom_fields_json': customFieldsJson,
       if (localUpdatedAt != null) 'local_updated_at': localUpdatedAt,
       if (serverUpdatedAt != null) 'server_updated_at': serverUpdatedAt,
     });
@@ -1035,6 +1389,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
     Value<bool>? isCustomer,
     Value<String?>? notes,
     Value<bool>? isActive,
+    Value<String?>? country,
+    Value<String?>? state,
+    Value<String?>? city,
+    Value<String?>? address,
+    Value<String?>? postalCode,
+    Value<String?>? website,
+    Value<String?>? lifecycleStageId,
+    Value<String?>? customFieldsJson,
     Value<DateTime>? localUpdatedAt,
     Value<DateTime?>? serverUpdatedAt,
   }) {
@@ -1058,6 +1420,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
       isCustomer: isCustomer ?? this.isCustomer,
       notes: notes ?? this.notes,
       isActive: isActive ?? this.isActive,
+      country: country ?? this.country,
+      state: state ?? this.state,
+      city: city ?? this.city,
+      address: address ?? this.address,
+      postalCode: postalCode ?? this.postalCode,
+      website: website ?? this.website,
+      lifecycleStageId: lifecycleStageId ?? this.lifecycleStageId,
+      customFieldsJson: customFieldsJson ?? this.customFieldsJson,
       localUpdatedAt: localUpdatedAt ?? this.localUpdatedAt,
       serverUpdatedAt: serverUpdatedAt ?? this.serverUpdatedAt,
     );
@@ -1123,6 +1493,30 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
     if (isActive.present) {
       map['is_active'] = Variable<bool>(isActive.value);
     }
+    if (country.present) {
+      map['country'] = Variable<String>(country.value);
+    }
+    if (state.present) {
+      map['state'] = Variable<String>(state.value);
+    }
+    if (city.present) {
+      map['city'] = Variable<String>(city.value);
+    }
+    if (address.present) {
+      map['address'] = Variable<String>(address.value);
+    }
+    if (postalCode.present) {
+      map['postal_code'] = Variable<String>(postalCode.value);
+    }
+    if (website.present) {
+      map['website'] = Variable<String>(website.value);
+    }
+    if (lifecycleStageId.present) {
+      map['lifecycle_stage_id'] = Variable<String>(lifecycleStageId.value);
+    }
+    if (customFieldsJson.present) {
+      map['custom_fields_json'] = Variable<String>(customFieldsJson.value);
+    }
     if (localUpdatedAt.present) {
       map['local_updated_at'] = Variable<DateTime>(localUpdatedAt.value);
     }
@@ -1154,6 +1548,14 @@ class ContactsTableCompanion extends UpdateCompanion<ContactEntry> {
           ..write('isCustomer: $isCustomer, ')
           ..write('notes: $notes, ')
           ..write('isActive: $isActive, ')
+          ..write('country: $country, ')
+          ..write('state: $state, ')
+          ..write('city: $city, ')
+          ..write('address: $address, ')
+          ..write('postalCode: $postalCode, ')
+          ..write('website: $website, ')
+          ..write('lifecycleStageId: $lifecycleStageId, ')
+          ..write('customFieldsJson: $customFieldsJson, ')
           ..write('localUpdatedAt: $localUpdatedAt, ')
           ..write('serverUpdatedAt: $serverUpdatedAt')
           ..write(')'))
@@ -2115,6 +2517,17 @@ class $TasksTableTable extends TasksTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _dueDateMeta = const VerificationMeta(
+    'dueDate',
+  );
+  @override
+  late final GeneratedColumn<DateTime> dueDate = GeneratedColumn<DateTime>(
+    'due_date',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _priorityMeta = const VerificationMeta(
     'priority',
   );
@@ -2137,52 +2550,6 @@ class $TasksTableTable extends TasksTable
     requiredDuringInsert: false,
     defaultValue: const Constant('pending'),
   );
-  static const VerificationMeta _dueDateMeta = const VerificationMeta(
-    'dueDate',
-  );
-  @override
-  late final GeneratedColumn<DateTime> dueDate = GeneratedColumn<DateTime>(
-    'due_date',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _completedAtMeta = const VerificationMeta(
-    'completedAt',
-  );
-  @override
-  late final GeneratedColumn<DateTime> completedAt = GeneratedColumn<DateTime>(
-    'completed_at',
-    aliasedName,
-    true,
-    type: DriftSqlType.dateTime,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _notesMeta = const VerificationMeta('notes');
-  @override
-  late final GeneratedColumn<String> notes = GeneratedColumn<String>(
-    'notes',
-    aliasedName,
-    true,
-    type: DriftSqlType.string,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _reminderScheduledMeta = const VerificationMeta(
-    'reminderScheduled',
-  );
-  @override
-  late final GeneratedColumn<bool> reminderScheduled = GeneratedColumn<bool>(
-    'reminder_scheduled',
-    aliasedName,
-    false,
-    type: DriftSqlType.bool,
-    requiredDuringInsert: false,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'CHECK ("reminder_scheduled" IN (0, 1))',
-    ),
-    defaultValue: const Constant(false),
-  );
   static const VerificationMeta _localUpdatedAtMeta = const VerificationMeta(
     'localUpdatedAt',
   );
@@ -2203,12 +2570,9 @@ class $TasksTableTable extends TasksTable
     contactLocalId,
     title,
     description,
+    dueDate,
     priority,
     status,
-    dueDate,
-    completedAt,
-    notes,
-    reminderScheduled,
     localUpdatedAt,
   ];
   @override
@@ -2267,6 +2631,12 @@ class $TasksTableTable extends TasksTable
         ),
       );
     }
+    if (data.containsKey('due_date')) {
+      context.handle(
+        _dueDateMeta,
+        dueDate.isAcceptableOrUnknown(data['due_date']!, _dueDateMeta),
+      );
+    }
     if (data.containsKey('priority')) {
       context.handle(
         _priorityMeta,
@@ -2277,36 +2647,6 @@ class $TasksTableTable extends TasksTable
       context.handle(
         _statusMeta,
         status.isAcceptableOrUnknown(data['status']!, _statusMeta),
-      );
-    }
-    if (data.containsKey('due_date')) {
-      context.handle(
-        _dueDateMeta,
-        dueDate.isAcceptableOrUnknown(data['due_date']!, _dueDateMeta),
-      );
-    }
-    if (data.containsKey('completed_at')) {
-      context.handle(
-        _completedAtMeta,
-        completedAt.isAcceptableOrUnknown(
-          data['completed_at']!,
-          _completedAtMeta,
-        ),
-      );
-    }
-    if (data.containsKey('notes')) {
-      context.handle(
-        _notesMeta,
-        notes.isAcceptableOrUnknown(data['notes']!, _notesMeta),
-      );
-    }
-    if (data.containsKey('reminder_scheduled')) {
-      context.handle(
-        _reminderScheduledMeta,
-        reminderScheduled.isAcceptableOrUnknown(
-          data['reminder_scheduled']!,
-          _reminderScheduledMeta,
-        ),
       );
     }
     if (data.containsKey('local_updated_at')) {
@@ -2353,6 +2693,10 @@ class $TasksTableTable extends TasksTable
         DriftSqlType.string,
         data['${effectivePrefix}description'],
       ),
+      dueDate: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}due_date'],
+      ),
       priority: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}priority'],
@@ -2360,22 +2704,6 @@ class $TasksTableTable extends TasksTable
       status: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}status'],
-      )!,
-      dueDate: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}due_date'],
-      ),
-      completedAt: attachedDatabase.typeMapping.read(
-        DriftSqlType.dateTime,
-        data['${effectivePrefix}completed_at'],
-      ),
-      notes: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}notes'],
-      ),
-      reminderScheduled: attachedDatabase.typeMapping.read(
-        DriftSqlType.bool,
-        data['${effectivePrefix}reminder_scheduled'],
       )!,
       localUpdatedAt: attachedDatabase.typeMapping.read(
         DriftSqlType.dateTime,
@@ -2397,12 +2725,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
   final int? contactLocalId;
   final String title;
   final String? description;
+  final DateTime? dueDate;
   final String priority;
   final String status;
-  final DateTime? dueDate;
-  final DateTime? completedAt;
-  final String? notes;
-  final bool reminderScheduled;
   final DateTime localUpdatedAt;
   const TaskEntry({
     required this.localId,
@@ -2411,12 +2736,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
     this.contactLocalId,
     required this.title,
     this.description,
+    this.dueDate,
     required this.priority,
     required this.status,
-    this.dueDate,
-    this.completedAt,
-    this.notes,
-    required this.reminderScheduled,
     required this.localUpdatedAt,
   });
   @override
@@ -2434,18 +2756,11 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
     if (!nullToAbsent || description != null) {
       map['description'] = Variable<String>(description);
     }
-    map['priority'] = Variable<String>(priority);
-    map['status'] = Variable<String>(status);
     if (!nullToAbsent || dueDate != null) {
       map['due_date'] = Variable<DateTime>(dueDate);
     }
-    if (!nullToAbsent || completedAt != null) {
-      map['completed_at'] = Variable<DateTime>(completedAt);
-    }
-    if (!nullToAbsent || notes != null) {
-      map['notes'] = Variable<String>(notes);
-    }
-    map['reminder_scheduled'] = Variable<bool>(reminderScheduled);
+    map['priority'] = Variable<String>(priority);
+    map['status'] = Variable<String>(status);
     map['local_updated_at'] = Variable<DateTime>(localUpdatedAt);
     return map;
   }
@@ -2464,18 +2779,11 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
       description: description == null && nullToAbsent
           ? const Value.absent()
           : Value(description),
-      priority: Value(priority),
-      status: Value(status),
       dueDate: dueDate == null && nullToAbsent
           ? const Value.absent()
           : Value(dueDate),
-      completedAt: completedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(completedAt),
-      notes: notes == null && nullToAbsent
-          ? const Value.absent()
-          : Value(notes),
-      reminderScheduled: Value(reminderScheduled),
+      priority: Value(priority),
+      status: Value(status),
       localUpdatedAt: Value(localUpdatedAt),
     );
   }
@@ -2492,12 +2800,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
       contactLocalId: serializer.fromJson<int?>(json['contactLocalId']),
       title: serializer.fromJson<String>(json['title']),
       description: serializer.fromJson<String?>(json['description']),
+      dueDate: serializer.fromJson<DateTime?>(json['dueDate']),
       priority: serializer.fromJson<String>(json['priority']),
       status: serializer.fromJson<String>(json['status']),
-      dueDate: serializer.fromJson<DateTime?>(json['dueDate']),
-      completedAt: serializer.fromJson<DateTime?>(json['completedAt']),
-      notes: serializer.fromJson<String?>(json['notes']),
-      reminderScheduled: serializer.fromJson<bool>(json['reminderScheduled']),
       localUpdatedAt: serializer.fromJson<DateTime>(json['localUpdatedAt']),
     );
   }
@@ -2511,12 +2816,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
       'contactLocalId': serializer.toJson<int?>(contactLocalId),
       'title': serializer.toJson<String>(title),
       'description': serializer.toJson<String?>(description),
+      'dueDate': serializer.toJson<DateTime?>(dueDate),
       'priority': serializer.toJson<String>(priority),
       'status': serializer.toJson<String>(status),
-      'dueDate': serializer.toJson<DateTime?>(dueDate),
-      'completedAt': serializer.toJson<DateTime?>(completedAt),
-      'notes': serializer.toJson<String?>(notes),
-      'reminderScheduled': serializer.toJson<bool>(reminderScheduled),
       'localUpdatedAt': serializer.toJson<DateTime>(localUpdatedAt),
     };
   }
@@ -2528,12 +2830,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
     Value<int?> contactLocalId = const Value.absent(),
     String? title,
     Value<String?> description = const Value.absent(),
+    Value<DateTime?> dueDate = const Value.absent(),
     String? priority,
     String? status,
-    Value<DateTime?> dueDate = const Value.absent(),
-    Value<DateTime?> completedAt = const Value.absent(),
-    Value<String?> notes = const Value.absent(),
-    bool? reminderScheduled,
     DateTime? localUpdatedAt,
   }) => TaskEntry(
     localId: localId ?? this.localId,
@@ -2544,12 +2843,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
         : this.contactLocalId,
     title: title ?? this.title,
     description: description.present ? description.value : this.description,
+    dueDate: dueDate.present ? dueDate.value : this.dueDate,
     priority: priority ?? this.priority,
     status: status ?? this.status,
-    dueDate: dueDate.present ? dueDate.value : this.dueDate,
-    completedAt: completedAt.present ? completedAt.value : this.completedAt,
-    notes: notes.present ? notes.value : this.notes,
-    reminderScheduled: reminderScheduled ?? this.reminderScheduled,
     localUpdatedAt: localUpdatedAt ?? this.localUpdatedAt,
   );
   TaskEntry copyWithCompanion(TasksTableCompanion data) {
@@ -2566,16 +2862,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
       description: data.description.present
           ? data.description.value
           : this.description,
+      dueDate: data.dueDate.present ? data.dueDate.value : this.dueDate,
       priority: data.priority.present ? data.priority.value : this.priority,
       status: data.status.present ? data.status.value : this.status,
-      dueDate: data.dueDate.present ? data.dueDate.value : this.dueDate,
-      completedAt: data.completedAt.present
-          ? data.completedAt.value
-          : this.completedAt,
-      notes: data.notes.present ? data.notes.value : this.notes,
-      reminderScheduled: data.reminderScheduled.present
-          ? data.reminderScheduled.value
-          : this.reminderScheduled,
       localUpdatedAt: data.localUpdatedAt.present
           ? data.localUpdatedAt.value
           : this.localUpdatedAt,
@@ -2591,12 +2880,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
           ..write('contactLocalId: $contactLocalId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
+          ..write('dueDate: $dueDate, ')
           ..write('priority: $priority, ')
           ..write('status: $status, ')
-          ..write('dueDate: $dueDate, ')
-          ..write('completedAt: $completedAt, ')
-          ..write('notes: $notes, ')
-          ..write('reminderScheduled: $reminderScheduled, ')
           ..write('localUpdatedAt: $localUpdatedAt')
           ..write(')'))
         .toString();
@@ -2610,12 +2896,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
     contactLocalId,
     title,
     description,
+    dueDate,
     priority,
     status,
-    dueDate,
-    completedAt,
-    notes,
-    reminderScheduled,
     localUpdatedAt,
   );
   @override
@@ -2628,12 +2911,9 @@ class TaskEntry extends DataClass implements Insertable<TaskEntry> {
           other.contactLocalId == this.contactLocalId &&
           other.title == this.title &&
           other.description == this.description &&
+          other.dueDate == this.dueDate &&
           other.priority == this.priority &&
           other.status == this.status &&
-          other.dueDate == this.dueDate &&
-          other.completedAt == this.completedAt &&
-          other.notes == this.notes &&
-          other.reminderScheduled == this.reminderScheduled &&
           other.localUpdatedAt == this.localUpdatedAt);
 }
 
@@ -2644,12 +2924,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
   final Value<int?> contactLocalId;
   final Value<String> title;
   final Value<String?> description;
+  final Value<DateTime?> dueDate;
   final Value<String> priority;
   final Value<String> status;
-  final Value<DateTime?> dueDate;
-  final Value<DateTime?> completedAt;
-  final Value<String?> notes;
-  final Value<bool> reminderScheduled;
   final Value<DateTime> localUpdatedAt;
   const TasksTableCompanion({
     this.localId = const Value.absent(),
@@ -2658,12 +2935,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
     this.contactLocalId = const Value.absent(),
     this.title = const Value.absent(),
     this.description = const Value.absent(),
+    this.dueDate = const Value.absent(),
     this.priority = const Value.absent(),
     this.status = const Value.absent(),
-    this.dueDate = const Value.absent(),
-    this.completedAt = const Value.absent(),
-    this.notes = const Value.absent(),
-    this.reminderScheduled = const Value.absent(),
     this.localUpdatedAt = const Value.absent(),
   });
   TasksTableCompanion.insert({
@@ -2673,12 +2947,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
     this.contactLocalId = const Value.absent(),
     required String title,
     this.description = const Value.absent(),
+    this.dueDate = const Value.absent(),
     this.priority = const Value.absent(),
     this.status = const Value.absent(),
-    this.dueDate = const Value.absent(),
-    this.completedAt = const Value.absent(),
-    this.notes = const Value.absent(),
-    this.reminderScheduled = const Value.absent(),
     required DateTime localUpdatedAt,
   }) : title = Value(title),
        localUpdatedAt = Value(localUpdatedAt);
@@ -2689,12 +2960,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
     Expression<int>? contactLocalId,
     Expression<String>? title,
     Expression<String>? description,
+    Expression<DateTime>? dueDate,
     Expression<String>? priority,
     Expression<String>? status,
-    Expression<DateTime>? dueDate,
-    Expression<DateTime>? completedAt,
-    Expression<String>? notes,
-    Expression<bool>? reminderScheduled,
     Expression<DateTime>? localUpdatedAt,
   }) {
     return RawValuesInsertable({
@@ -2704,12 +2972,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
       if (contactLocalId != null) 'contact_local_id': contactLocalId,
       if (title != null) 'title': title,
       if (description != null) 'description': description,
+      if (dueDate != null) 'due_date': dueDate,
       if (priority != null) 'priority': priority,
       if (status != null) 'status': status,
-      if (dueDate != null) 'due_date': dueDate,
-      if (completedAt != null) 'completed_at': completedAt,
-      if (notes != null) 'notes': notes,
-      if (reminderScheduled != null) 'reminder_scheduled': reminderScheduled,
       if (localUpdatedAt != null) 'local_updated_at': localUpdatedAt,
     });
   }
@@ -2721,12 +2986,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
     Value<int?>? contactLocalId,
     Value<String>? title,
     Value<String?>? description,
+    Value<DateTime?>? dueDate,
     Value<String>? priority,
     Value<String>? status,
-    Value<DateTime?>? dueDate,
-    Value<DateTime?>? completedAt,
-    Value<String?>? notes,
-    Value<bool>? reminderScheduled,
     Value<DateTime>? localUpdatedAt,
   }) {
     return TasksTableCompanion(
@@ -2736,12 +2998,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
       contactLocalId: contactLocalId ?? this.contactLocalId,
       title: title ?? this.title,
       description: description ?? this.description,
+      dueDate: dueDate ?? this.dueDate,
       priority: priority ?? this.priority,
       status: status ?? this.status,
-      dueDate: dueDate ?? this.dueDate,
-      completedAt: completedAt ?? this.completedAt,
-      notes: notes ?? this.notes,
-      reminderScheduled: reminderScheduled ?? this.reminderScheduled,
       localUpdatedAt: localUpdatedAt ?? this.localUpdatedAt,
     );
   }
@@ -2767,23 +3026,14 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
+    if (dueDate.present) {
+      map['due_date'] = Variable<DateTime>(dueDate.value);
+    }
     if (priority.present) {
       map['priority'] = Variable<String>(priority.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
-    }
-    if (dueDate.present) {
-      map['due_date'] = Variable<DateTime>(dueDate.value);
-    }
-    if (completedAt.present) {
-      map['completed_at'] = Variable<DateTime>(completedAt.value);
-    }
-    if (notes.present) {
-      map['notes'] = Variable<String>(notes.value);
-    }
-    if (reminderScheduled.present) {
-      map['reminder_scheduled'] = Variable<bool>(reminderScheduled.value);
     }
     if (localUpdatedAt.present) {
       map['local_updated_at'] = Variable<DateTime>(localUpdatedAt.value);
@@ -2800,12 +3050,9 @@ class TasksTableCompanion extends UpdateCompanion<TaskEntry> {
           ..write('contactLocalId: $contactLocalId, ')
           ..write('title: $title, ')
           ..write('description: $description, ')
+          ..write('dueDate: $dueDate, ')
           ..write('priority: $priority, ')
           ..write('status: $status, ')
-          ..write('dueDate: $dueDate, ')
-          ..write('completedAt: $completedAt, ')
-          ..write('notes: $notes, ')
-          ..write('reminderScheduled: $reminderScheduled, ')
           ..write('localUpdatedAt: $localUpdatedAt')
           ..write(')'))
         .toString();
@@ -2886,29 +3133,7 @@ class $DealsTableTable extends DealsTable
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: false,
-    defaultValue: const Constant('Lead'),
-  );
-  static const VerificationMeta _stageIdMeta = const VerificationMeta(
-    'stageId',
-  );
-  @override
-  late final GeneratedColumn<int> stageId = GeneratedColumn<int>(
-    'stage_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
-  static const VerificationMeta _pipelineIdMeta = const VerificationMeta(
-    'pipelineId',
-  );
-  @override
-  late final GeneratedColumn<int> pipelineId = GeneratedColumn<int>(
-    'pipeline_id',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
+    defaultValue: const Constant('Qualification'),
   );
   static const VerificationMeta _amountMeta = const VerificationMeta('amount');
   @override
@@ -2919,18 +3144,6 @@ class $DealsTableTable extends DealsTable
     type: DriftSqlType.double,
     requiredDuringInsert: false,
     defaultValue: const Constant(0.0),
-  );
-  static const VerificationMeta _probabilityMeta = const VerificationMeta(
-    'probability',
-  );
-  @override
-  late final GeneratedColumn<double> probability = GeneratedColumn<double>(
-    'probability',
-    aliasedName,
-    false,
-    type: DriftSqlType.double,
-    requiredDuringInsert: false,
-    defaultValue: const Constant(100.0),
   );
   static const VerificationMeta _currencyMeta = const VerificationMeta(
     'currency',
@@ -2953,6 +3166,39 @@ class $DealsTableTable extends DealsTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
     defaultValue: const Constant('open'),
+  );
+  static const VerificationMeta _stageIdMeta = const VerificationMeta(
+    'stageId',
+  );
+  @override
+  late final GeneratedColumn<String> stageId = GeneratedColumn<String>(
+    'stage_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _pipelineIdMeta = const VerificationMeta(
+    'pipelineId',
+  );
+  @override
+  late final GeneratedColumn<String> pipelineId = GeneratedColumn<String>(
+    'pipeline_id',
+    aliasedName,
+    true,
+    type: DriftSqlType.string,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _probabilityMeta = const VerificationMeta(
+    'probability',
+  );
+  @override
+  late final GeneratedColumn<double> probability = GeneratedColumn<double>(
+    'probability',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
   );
   static const VerificationMeta _lostReasonMeta = const VerificationMeta(
     'lostReason',
@@ -3006,12 +3252,12 @@ class $DealsTableTable extends DealsTable
     contactLocalId,
     title,
     stageName,
-    stageId,
-    pipelineId,
     amount,
-    probability,
     currency,
     status,
+    stageId,
+    pipelineId,
+    probability,
     lostReason,
     notes,
     expectedCloseDate,
@@ -3070,31 +3316,10 @@ class $DealsTableTable extends DealsTable
         stageName.isAcceptableOrUnknown(data['stage_name']!, _stageNameMeta),
       );
     }
-    if (data.containsKey('stage_id')) {
-      context.handle(
-        _stageIdMeta,
-        stageId.isAcceptableOrUnknown(data['stage_id']!, _stageIdMeta),
-      );
-    }
-    if (data.containsKey('pipeline_id')) {
-      context.handle(
-        _pipelineIdMeta,
-        pipelineId.isAcceptableOrUnknown(data['pipeline_id']!, _pipelineIdMeta),
-      );
-    }
     if (data.containsKey('amount')) {
       context.handle(
         _amountMeta,
         amount.isAcceptableOrUnknown(data['amount']!, _amountMeta),
-      );
-    }
-    if (data.containsKey('probability')) {
-      context.handle(
-        _probabilityMeta,
-        probability.isAcceptableOrUnknown(
-          data['probability']!,
-          _probabilityMeta,
-        ),
       );
     }
     if (data.containsKey('currency')) {
@@ -3107,6 +3332,27 @@ class $DealsTableTable extends DealsTable
       context.handle(
         _statusMeta,
         status.isAcceptableOrUnknown(data['status']!, _statusMeta),
+      );
+    }
+    if (data.containsKey('stage_id')) {
+      context.handle(
+        _stageIdMeta,
+        stageId.isAcceptableOrUnknown(data['stage_id']!, _stageIdMeta),
+      );
+    }
+    if (data.containsKey('pipeline_id')) {
+      context.handle(
+        _pipelineIdMeta,
+        pipelineId.isAcceptableOrUnknown(data['pipeline_id']!, _pipelineIdMeta),
+      );
+    }
+    if (data.containsKey('probability')) {
+      context.handle(
+        _probabilityMeta,
+        probability.isAcceptableOrUnknown(
+          data['probability']!,
+          _probabilityMeta,
+        ),
       );
     }
     if (data.containsKey('lost_reason')) {
@@ -3174,21 +3420,9 @@ class $DealsTableTable extends DealsTable
         DriftSqlType.string,
         data['${effectivePrefix}stage_name'],
       )!,
-      stageId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}stage_id'],
-      ),
-      pipelineId: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}pipeline_id'],
-      ),
       amount: attachedDatabase.typeMapping.read(
         DriftSqlType.double,
         data['${effectivePrefix}amount'],
-      )!,
-      probability: attachedDatabase.typeMapping.read(
-        DriftSqlType.double,
-        data['${effectivePrefix}probability'],
       )!,
       currency: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -3198,6 +3432,18 @@ class $DealsTableTable extends DealsTable
         DriftSqlType.string,
         data['${effectivePrefix}status'],
       )!,
+      stageId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}stage_id'],
+      ),
+      pipelineId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}pipeline_id'],
+      ),
+      probability: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}probability'],
+      ),
       lostReason: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}lost_reason'],
@@ -3230,12 +3476,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
   final int? contactLocalId;
   final String title;
   final String stageName;
-  final int? stageId;
-  final int? pipelineId;
   final double amount;
-  final double probability;
   final String currency;
   final String status;
+  final String? stageId;
+  final String? pipelineId;
+  final double? probability;
   final String? lostReason;
   final String? notes;
   final DateTime? expectedCloseDate;
@@ -3247,12 +3493,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
     this.contactLocalId,
     required this.title,
     required this.stageName,
-    this.stageId,
-    this.pipelineId,
     required this.amount,
-    required this.probability,
     required this.currency,
     required this.status,
+    this.stageId,
+    this.pipelineId,
+    this.probability,
     this.lostReason,
     this.notes,
     this.expectedCloseDate,
@@ -3271,16 +3517,18 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
     }
     map['title'] = Variable<String>(title);
     map['stage_name'] = Variable<String>(stageName);
-    if (!nullToAbsent || stageId != null) {
-      map['stage_id'] = Variable<int>(stageId);
-    }
-    if (!nullToAbsent || pipelineId != null) {
-      map['pipeline_id'] = Variable<int>(pipelineId);
-    }
     map['amount'] = Variable<double>(amount);
-    map['probability'] = Variable<double>(probability);
     map['currency'] = Variable<String>(currency);
     map['status'] = Variable<String>(status);
+    if (!nullToAbsent || stageId != null) {
+      map['stage_id'] = Variable<String>(stageId);
+    }
+    if (!nullToAbsent || pipelineId != null) {
+      map['pipeline_id'] = Variable<String>(pipelineId);
+    }
+    if (!nullToAbsent || probability != null) {
+      map['probability'] = Variable<double>(probability);
+    }
     if (!nullToAbsent || lostReason != null) {
       map['lost_reason'] = Variable<String>(lostReason);
     }
@@ -3306,16 +3554,18 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
           : Value(contactLocalId),
       title: Value(title),
       stageName: Value(stageName),
+      amount: Value(amount),
+      currency: Value(currency),
+      status: Value(status),
       stageId: stageId == null && nullToAbsent
           ? const Value.absent()
           : Value(stageId),
       pipelineId: pipelineId == null && nullToAbsent
           ? const Value.absent()
           : Value(pipelineId),
-      amount: Value(amount),
-      probability: Value(probability),
-      currency: Value(currency),
-      status: Value(status),
+      probability: probability == null && nullToAbsent
+          ? const Value.absent()
+          : Value(probability),
       lostReason: lostReason == null && nullToAbsent
           ? const Value.absent()
           : Value(lostReason),
@@ -3341,12 +3591,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
       contactLocalId: serializer.fromJson<int?>(json['contactLocalId']),
       title: serializer.fromJson<String>(json['title']),
       stageName: serializer.fromJson<String>(json['stageName']),
-      stageId: serializer.fromJson<int?>(json['stageId']),
-      pipelineId: serializer.fromJson<int?>(json['pipelineId']),
       amount: serializer.fromJson<double>(json['amount']),
-      probability: serializer.fromJson<double>(json['probability']),
       currency: serializer.fromJson<String>(json['currency']),
       status: serializer.fromJson<String>(json['status']),
+      stageId: serializer.fromJson<String?>(json['stageId']),
+      pipelineId: serializer.fromJson<String?>(json['pipelineId']),
+      probability: serializer.fromJson<double?>(json['probability']),
       lostReason: serializer.fromJson<String?>(json['lostReason']),
       notes: serializer.fromJson<String?>(json['notes']),
       expectedCloseDate: serializer.fromJson<DateTime?>(
@@ -3365,12 +3615,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
       'contactLocalId': serializer.toJson<int?>(contactLocalId),
       'title': serializer.toJson<String>(title),
       'stageName': serializer.toJson<String>(stageName),
-      'stageId': serializer.toJson<int?>(stageId),
-      'pipelineId': serializer.toJson<int?>(pipelineId),
       'amount': serializer.toJson<double>(amount),
-      'probability': serializer.toJson<double>(probability),
       'currency': serializer.toJson<String>(currency),
       'status': serializer.toJson<String>(status),
+      'stageId': serializer.toJson<String?>(stageId),
+      'pipelineId': serializer.toJson<String?>(pipelineId),
+      'probability': serializer.toJson<double?>(probability),
       'lostReason': serializer.toJson<String?>(lostReason),
       'notes': serializer.toJson<String?>(notes),
       'expectedCloseDate': serializer.toJson<DateTime?>(expectedCloseDate),
@@ -3385,12 +3635,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
     Value<int?> contactLocalId = const Value.absent(),
     String? title,
     String? stageName,
-    Value<int?> stageId = const Value.absent(),
-    Value<int?> pipelineId = const Value.absent(),
     double? amount,
-    double? probability,
     String? currency,
     String? status,
+    Value<String?> stageId = const Value.absent(),
+    Value<String?> pipelineId = const Value.absent(),
+    Value<double?> probability = const Value.absent(),
     Value<String?> lostReason = const Value.absent(),
     Value<String?> notes = const Value.absent(),
     Value<DateTime?> expectedCloseDate = const Value.absent(),
@@ -3404,12 +3654,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
         : this.contactLocalId,
     title: title ?? this.title,
     stageName: stageName ?? this.stageName,
-    stageId: stageId.present ? stageId.value : this.stageId,
-    pipelineId: pipelineId.present ? pipelineId.value : this.pipelineId,
     amount: amount ?? this.amount,
-    probability: probability ?? this.probability,
     currency: currency ?? this.currency,
     status: status ?? this.status,
+    stageId: stageId.present ? stageId.value : this.stageId,
+    pipelineId: pipelineId.present ? pipelineId.value : this.pipelineId,
+    probability: probability.present ? probability.value : this.probability,
     lostReason: lostReason.present ? lostReason.value : this.lostReason,
     notes: notes.present ? notes.value : this.notes,
     expectedCloseDate: expectedCloseDate.present
@@ -3429,16 +3679,16 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
           : this.contactLocalId,
       title: data.title.present ? data.title.value : this.title,
       stageName: data.stageName.present ? data.stageName.value : this.stageName,
+      amount: data.amount.present ? data.amount.value : this.amount,
+      currency: data.currency.present ? data.currency.value : this.currency,
+      status: data.status.present ? data.status.value : this.status,
       stageId: data.stageId.present ? data.stageId.value : this.stageId,
       pipelineId: data.pipelineId.present
           ? data.pipelineId.value
           : this.pipelineId,
-      amount: data.amount.present ? data.amount.value : this.amount,
       probability: data.probability.present
           ? data.probability.value
           : this.probability,
-      currency: data.currency.present ? data.currency.value : this.currency,
-      status: data.status.present ? data.status.value : this.status,
       lostReason: data.lostReason.present
           ? data.lostReason.value
           : this.lostReason,
@@ -3461,12 +3711,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
           ..write('contactLocalId: $contactLocalId, ')
           ..write('title: $title, ')
           ..write('stageName: $stageName, ')
-          ..write('stageId: $stageId, ')
-          ..write('pipelineId: $pipelineId, ')
           ..write('amount: $amount, ')
-          ..write('probability: $probability, ')
           ..write('currency: $currency, ')
           ..write('status: $status, ')
+          ..write('stageId: $stageId, ')
+          ..write('pipelineId: $pipelineId, ')
+          ..write('probability: $probability, ')
           ..write('lostReason: $lostReason, ')
           ..write('notes: $notes, ')
           ..write('expectedCloseDate: $expectedCloseDate, ')
@@ -3483,12 +3733,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
     contactLocalId,
     title,
     stageName,
-    stageId,
-    pipelineId,
     amount,
-    probability,
     currency,
     status,
+    stageId,
+    pipelineId,
+    probability,
     lostReason,
     notes,
     expectedCloseDate,
@@ -3504,12 +3754,12 @@ class DealEntry extends DataClass implements Insertable<DealEntry> {
           other.contactLocalId == this.contactLocalId &&
           other.title == this.title &&
           other.stageName == this.stageName &&
-          other.stageId == this.stageId &&
-          other.pipelineId == this.pipelineId &&
           other.amount == this.amount &&
-          other.probability == this.probability &&
           other.currency == this.currency &&
           other.status == this.status &&
+          other.stageId == this.stageId &&
+          other.pipelineId == this.pipelineId &&
+          other.probability == this.probability &&
           other.lostReason == this.lostReason &&
           other.notes == this.notes &&
           other.expectedCloseDate == this.expectedCloseDate &&
@@ -3523,12 +3773,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
   final Value<int?> contactLocalId;
   final Value<String> title;
   final Value<String> stageName;
-  final Value<int?> stageId;
-  final Value<int?> pipelineId;
   final Value<double> amount;
-  final Value<double> probability;
   final Value<String> currency;
   final Value<String> status;
+  final Value<String?> stageId;
+  final Value<String?> pipelineId;
+  final Value<double?> probability;
   final Value<String?> lostReason;
   final Value<String?> notes;
   final Value<DateTime?> expectedCloseDate;
@@ -3540,12 +3790,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
     this.contactLocalId = const Value.absent(),
     this.title = const Value.absent(),
     this.stageName = const Value.absent(),
-    this.stageId = const Value.absent(),
-    this.pipelineId = const Value.absent(),
     this.amount = const Value.absent(),
-    this.probability = const Value.absent(),
     this.currency = const Value.absent(),
     this.status = const Value.absent(),
+    this.stageId = const Value.absent(),
+    this.pipelineId = const Value.absent(),
+    this.probability = const Value.absent(),
     this.lostReason = const Value.absent(),
     this.notes = const Value.absent(),
     this.expectedCloseDate = const Value.absent(),
@@ -3558,12 +3808,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
     this.contactLocalId = const Value.absent(),
     required String title,
     this.stageName = const Value.absent(),
-    this.stageId = const Value.absent(),
-    this.pipelineId = const Value.absent(),
     this.amount = const Value.absent(),
-    this.probability = const Value.absent(),
     this.currency = const Value.absent(),
     this.status = const Value.absent(),
+    this.stageId = const Value.absent(),
+    this.pipelineId = const Value.absent(),
+    this.probability = const Value.absent(),
     this.lostReason = const Value.absent(),
     this.notes = const Value.absent(),
     this.expectedCloseDate = const Value.absent(),
@@ -3577,12 +3827,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
     Expression<int>? contactLocalId,
     Expression<String>? title,
     Expression<String>? stageName,
-    Expression<int>? stageId,
-    Expression<int>? pipelineId,
     Expression<double>? amount,
-    Expression<double>? probability,
     Expression<String>? currency,
     Expression<String>? status,
+    Expression<String>? stageId,
+    Expression<String>? pipelineId,
+    Expression<double>? probability,
     Expression<String>? lostReason,
     Expression<String>? notes,
     Expression<DateTime>? expectedCloseDate,
@@ -3595,12 +3845,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
       if (contactLocalId != null) 'contact_local_id': contactLocalId,
       if (title != null) 'title': title,
       if (stageName != null) 'stage_name': stageName,
-      if (stageId != null) 'stage_id': stageId,
-      if (pipelineId != null) 'pipeline_id': pipelineId,
       if (amount != null) 'amount': amount,
-      if (probability != null) 'probability': probability,
       if (currency != null) 'currency': currency,
       if (status != null) 'status': status,
+      if (stageId != null) 'stage_id': stageId,
+      if (pipelineId != null) 'pipeline_id': pipelineId,
+      if (probability != null) 'probability': probability,
       if (lostReason != null) 'lost_reason': lostReason,
       if (notes != null) 'notes': notes,
       if (expectedCloseDate != null) 'expected_close_date': expectedCloseDate,
@@ -3615,12 +3865,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
     Value<int?>? contactLocalId,
     Value<String>? title,
     Value<String>? stageName,
-    Value<int?>? stageId,
-    Value<int?>? pipelineId,
     Value<double>? amount,
-    Value<double>? probability,
     Value<String>? currency,
     Value<String>? status,
+    Value<String?>? stageId,
+    Value<String?>? pipelineId,
+    Value<double?>? probability,
     Value<String?>? lostReason,
     Value<String?>? notes,
     Value<DateTime?>? expectedCloseDate,
@@ -3633,12 +3883,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
       contactLocalId: contactLocalId ?? this.contactLocalId,
       title: title ?? this.title,
       stageName: stageName ?? this.stageName,
-      stageId: stageId ?? this.stageId,
-      pipelineId: pipelineId ?? this.pipelineId,
       amount: amount ?? this.amount,
-      probability: probability ?? this.probability,
       currency: currency ?? this.currency,
       status: status ?? this.status,
+      stageId: stageId ?? this.stageId,
+      pipelineId: pipelineId ?? this.pipelineId,
+      probability: probability ?? this.probability,
       lostReason: lostReason ?? this.lostReason,
       notes: notes ?? this.notes,
       expectedCloseDate: expectedCloseDate ?? this.expectedCloseDate,
@@ -3667,23 +3917,23 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
     if (stageName.present) {
       map['stage_name'] = Variable<String>(stageName.value);
     }
-    if (stageId.present) {
-      map['stage_id'] = Variable<int>(stageId.value);
-    }
-    if (pipelineId.present) {
-      map['pipeline_id'] = Variable<int>(pipelineId.value);
-    }
     if (amount.present) {
       map['amount'] = Variable<double>(amount.value);
-    }
-    if (probability.present) {
-      map['probability'] = Variable<double>(probability.value);
     }
     if (currency.present) {
       map['currency'] = Variable<String>(currency.value);
     }
     if (status.present) {
       map['status'] = Variable<String>(status.value);
+    }
+    if (stageId.present) {
+      map['stage_id'] = Variable<String>(stageId.value);
+    }
+    if (pipelineId.present) {
+      map['pipeline_id'] = Variable<String>(pipelineId.value);
+    }
+    if (probability.present) {
+      map['probability'] = Variable<double>(probability.value);
     }
     if (lostReason.present) {
       map['lost_reason'] = Variable<String>(lostReason.value);
@@ -3709,12 +3959,12 @@ class DealsTableCompanion extends UpdateCompanion<DealEntry> {
           ..write('contactLocalId: $contactLocalId, ')
           ..write('title: $title, ')
           ..write('stageName: $stageName, ')
-          ..write('stageId: $stageId, ')
-          ..write('pipelineId: $pipelineId, ')
           ..write('amount: $amount, ')
-          ..write('probability: $probability, ')
           ..write('currency: $currency, ')
           ..write('status: $status, ')
+          ..write('stageId: $stageId, ')
+          ..write('pipelineId: $pipelineId, ')
+          ..write('probability: $probability, ')
           ..write('lostReason: $lostReason, ')
           ..write('notes: $notes, ')
           ..write('expectedCloseDate: $expectedCloseDate, ')
@@ -4234,6 +4484,14 @@ typedef $$ContactsTableTableCreateCompanionBuilder =
       Value<bool> isCustomer,
       Value<String?> notes,
       Value<bool> isActive,
+      Value<String?> country,
+      Value<String?> state,
+      Value<String?> city,
+      Value<String?> address,
+      Value<String?> postalCode,
+      Value<String?> website,
+      Value<String?> lifecycleStageId,
+      Value<String?> customFieldsJson,
       required DateTime localUpdatedAt,
       Value<DateTime?> serverUpdatedAt,
     });
@@ -4258,6 +4516,14 @@ typedef $$ContactsTableTableUpdateCompanionBuilder =
       Value<bool> isCustomer,
       Value<String?> notes,
       Value<bool> isActive,
+      Value<String?> country,
+      Value<String?> state,
+      Value<String?> city,
+      Value<String?> address,
+      Value<String?> postalCode,
+      Value<String?> website,
+      Value<String?> lifecycleStageId,
+      Value<String?> customFieldsJson,
       Value<DateTime> localUpdatedAt,
       Value<DateTime?> serverUpdatedAt,
     });
@@ -4363,6 +4629,46 @@ class $$ContactsTableTableFilterComposer
 
   ColumnFilters<bool> get isActive => $composableBuilder(
     column: $table.isActive,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get address => $composableBuilder(
+    column: $table.address,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get website => $composableBuilder(
+    column: $table.website,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get lifecycleStageId => $composableBuilder(
+    column: $table.lifecycleStageId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get customFieldsJson => $composableBuilder(
+    column: $table.customFieldsJson,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -4481,6 +4787,46 @@ class $$ContactsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<String> get country => $composableBuilder(
+    column: $table.country,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get state => $composableBuilder(
+    column: $table.state,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get city => $composableBuilder(
+    column: $table.city,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get address => $composableBuilder(
+    column: $table.address,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get website => $composableBuilder(
+    column: $table.website,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get lifecycleStageId => $composableBuilder(
+    column: $table.lifecycleStageId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get customFieldsJson => $composableBuilder(
+    column: $table.customFieldsJson,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<DateTime> get localUpdatedAt => $composableBuilder(
     column: $table.localUpdatedAt,
     builder: (column) => ColumnOrderings(column),
@@ -4570,6 +4916,36 @@ class $$ContactsTableTableAnnotationComposer
   GeneratedColumn<bool> get isActive =>
       $composableBuilder(column: $table.isActive, builder: (column) => column);
 
+  GeneratedColumn<String> get country =>
+      $composableBuilder(column: $table.country, builder: (column) => column);
+
+  GeneratedColumn<String> get state =>
+      $composableBuilder(column: $table.state, builder: (column) => column);
+
+  GeneratedColumn<String> get city =>
+      $composableBuilder(column: $table.city, builder: (column) => column);
+
+  GeneratedColumn<String> get address =>
+      $composableBuilder(column: $table.address, builder: (column) => column);
+
+  GeneratedColumn<String> get postalCode => $composableBuilder(
+    column: $table.postalCode,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get website =>
+      $composableBuilder(column: $table.website, builder: (column) => column);
+
+  GeneratedColumn<String> get lifecycleStageId => $composableBuilder(
+    column: $table.lifecycleStageId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<String> get customFieldsJson => $composableBuilder(
+    column: $table.customFieldsJson,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<DateTime> get localUpdatedAt => $composableBuilder(
     column: $table.localUpdatedAt,
     builder: (column) => column,
@@ -4631,6 +5007,14 @@ class $$ContactsTableTableTableManager
                 Value<bool> isCustomer = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
+                Value<String?> country = const Value.absent(),
+                Value<String?> state = const Value.absent(),
+                Value<String?> city = const Value.absent(),
+                Value<String?> address = const Value.absent(),
+                Value<String?> postalCode = const Value.absent(),
+                Value<String?> website = const Value.absent(),
+                Value<String?> lifecycleStageId = const Value.absent(),
+                Value<String?> customFieldsJson = const Value.absent(),
                 Value<DateTime> localUpdatedAt = const Value.absent(),
                 Value<DateTime?> serverUpdatedAt = const Value.absent(),
               }) => ContactsTableCompanion(
@@ -4653,6 +5037,14 @@ class $$ContactsTableTableTableManager
                 isCustomer: isCustomer,
                 notes: notes,
                 isActive: isActive,
+                country: country,
+                state: state,
+                city: city,
+                address: address,
+                postalCode: postalCode,
+                website: website,
+                lifecycleStageId: lifecycleStageId,
+                customFieldsJson: customFieldsJson,
                 localUpdatedAt: localUpdatedAt,
                 serverUpdatedAt: serverUpdatedAt,
               ),
@@ -4677,6 +5069,14 @@ class $$ContactsTableTableTableManager
                 Value<bool> isCustomer = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<bool> isActive = const Value.absent(),
+                Value<String?> country = const Value.absent(),
+                Value<String?> state = const Value.absent(),
+                Value<String?> city = const Value.absent(),
+                Value<String?> address = const Value.absent(),
+                Value<String?> postalCode = const Value.absent(),
+                Value<String?> website = const Value.absent(),
+                Value<String?> lifecycleStageId = const Value.absent(),
+                Value<String?> customFieldsJson = const Value.absent(),
                 required DateTime localUpdatedAt,
                 Value<DateTime?> serverUpdatedAt = const Value.absent(),
               }) => ContactsTableCompanion.insert(
@@ -4699,6 +5099,14 @@ class $$ContactsTableTableTableManager
                 isCustomer: isCustomer,
                 notes: notes,
                 isActive: isActive,
+                country: country,
+                state: state,
+                city: city,
+                address: address,
+                postalCode: postalCode,
+                website: website,
+                lifecycleStageId: lifecycleStageId,
+                customFieldsJson: customFieldsJson,
                 localUpdatedAt: localUpdatedAt,
                 serverUpdatedAt: serverUpdatedAt,
               ),
@@ -5135,12 +5543,9 @@ typedef $$TasksTableTableCreateCompanionBuilder =
       Value<int?> contactLocalId,
       required String title,
       Value<String?> description,
+      Value<DateTime?> dueDate,
       Value<String> priority,
       Value<String> status,
-      Value<DateTime?> dueDate,
-      Value<DateTime?> completedAt,
-      Value<String?> notes,
-      Value<bool> reminderScheduled,
       required DateTime localUpdatedAt,
     });
 typedef $$TasksTableTableUpdateCompanionBuilder =
@@ -5151,12 +5556,9 @@ typedef $$TasksTableTableUpdateCompanionBuilder =
       Value<int?> contactLocalId,
       Value<String> title,
       Value<String?> description,
+      Value<DateTime?> dueDate,
       Value<String> priority,
       Value<String> status,
-      Value<DateTime?> dueDate,
-      Value<DateTime?> completedAt,
-      Value<String?> notes,
-      Value<bool> reminderScheduled,
       Value<DateTime> localUpdatedAt,
     });
 
@@ -5199,6 +5601,11 @@ class $$TasksTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<DateTime> get dueDate => $composableBuilder(
+    column: $table.dueDate,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get priority => $composableBuilder(
     column: $table.priority,
     builder: (column) => ColumnFilters(column),
@@ -5206,26 +5613,6 @@ class $$TasksTableTableFilterComposer
 
   ColumnFilters<String> get status => $composableBuilder(
     column: $table.status,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get dueDate => $composableBuilder(
-    column: $table.dueDate,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<DateTime> get completedAt => $composableBuilder(
-    column: $table.completedAt,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get notes => $composableBuilder(
-    column: $table.notes,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<bool> get reminderScheduled => $composableBuilder(
-    column: $table.reminderScheduled,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5274,6 +5661,11 @@ class $$TasksTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get dueDate => $composableBuilder(
+    column: $table.dueDate,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get priority => $composableBuilder(
     column: $table.priority,
     builder: (column) => ColumnOrderings(column),
@@ -5281,26 +5673,6 @@ class $$TasksTableTableOrderingComposer
 
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get dueDate => $composableBuilder(
-    column: $table.dueDate,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<DateTime> get completedAt => $composableBuilder(
-    column: $table.completedAt,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get notes => $composableBuilder(
-    column: $table.notes,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<bool> get reminderScheduled => $composableBuilder(
-    column: $table.reminderScheduled,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5343,27 +5715,14 @@ class $$TasksTableTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<DateTime> get dueDate =>
+      $composableBuilder(column: $table.dueDate, builder: (column) => column);
+
   GeneratedColumn<String> get priority =>
       $composableBuilder(column: $table.priority, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get dueDate =>
-      $composableBuilder(column: $table.dueDate, builder: (column) => column);
-
-  GeneratedColumn<DateTime> get completedAt => $composableBuilder(
-    column: $table.completedAt,
-    builder: (column) => column,
-  );
-
-  GeneratedColumn<String> get notes =>
-      $composableBuilder(column: $table.notes, builder: (column) => column);
-
-  GeneratedColumn<bool> get reminderScheduled => $composableBuilder(
-    column: $table.reminderScheduled,
-    builder: (column) => column,
-  );
 
   GeneratedColumn<DateTime> get localUpdatedAt => $composableBuilder(
     column: $table.localUpdatedAt,
@@ -5408,12 +5767,9 @@ class $$TasksTableTableTableManager
                 Value<int?> contactLocalId = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String?> description = const Value.absent(),
+                Value<DateTime?> dueDate = const Value.absent(),
                 Value<String> priority = const Value.absent(),
                 Value<String> status = const Value.absent(),
-                Value<DateTime?> dueDate = const Value.absent(),
-                Value<DateTime?> completedAt = const Value.absent(),
-                Value<String?> notes = const Value.absent(),
-                Value<bool> reminderScheduled = const Value.absent(),
                 Value<DateTime> localUpdatedAt = const Value.absent(),
               }) => TasksTableCompanion(
                 localId: localId,
@@ -5422,12 +5778,9 @@ class $$TasksTableTableTableManager
                 contactLocalId: contactLocalId,
                 title: title,
                 description: description,
+                dueDate: dueDate,
                 priority: priority,
                 status: status,
-                dueDate: dueDate,
-                completedAt: completedAt,
-                notes: notes,
-                reminderScheduled: reminderScheduled,
                 localUpdatedAt: localUpdatedAt,
               ),
           createCompanionCallback:
@@ -5438,12 +5791,9 @@ class $$TasksTableTableTableManager
                 Value<int?> contactLocalId = const Value.absent(),
                 required String title,
                 Value<String?> description = const Value.absent(),
+                Value<DateTime?> dueDate = const Value.absent(),
                 Value<String> priority = const Value.absent(),
                 Value<String> status = const Value.absent(),
-                Value<DateTime?> dueDate = const Value.absent(),
-                Value<DateTime?> completedAt = const Value.absent(),
-                Value<String?> notes = const Value.absent(),
-                Value<bool> reminderScheduled = const Value.absent(),
                 required DateTime localUpdatedAt,
               }) => TasksTableCompanion.insert(
                 localId: localId,
@@ -5452,12 +5802,9 @@ class $$TasksTableTableTableManager
                 contactLocalId: contactLocalId,
                 title: title,
                 description: description,
+                dueDate: dueDate,
                 priority: priority,
                 status: status,
-                dueDate: dueDate,
-                completedAt: completedAt,
-                notes: notes,
-                reminderScheduled: reminderScheduled,
                 localUpdatedAt: localUpdatedAt,
               ),
           withReferenceMapper: (p0) => p0
@@ -5490,12 +5837,12 @@ typedef $$DealsTableTableCreateCompanionBuilder =
       Value<int?> contactLocalId,
       required String title,
       Value<String> stageName,
-      Value<int?> stageId,
-      Value<int?> pipelineId,
       Value<double> amount,
-      Value<double> probability,
       Value<String> currency,
       Value<String> status,
+      Value<String?> stageId,
+      Value<String?> pipelineId,
+      Value<double?> probability,
       Value<String?> lostReason,
       Value<String?> notes,
       Value<DateTime?> expectedCloseDate,
@@ -5509,12 +5856,12 @@ typedef $$DealsTableTableUpdateCompanionBuilder =
       Value<int?> contactLocalId,
       Value<String> title,
       Value<String> stageName,
-      Value<int?> stageId,
-      Value<int?> pipelineId,
       Value<double> amount,
-      Value<double> probability,
       Value<String> currency,
       Value<String> status,
+      Value<String?> stageId,
+      Value<String?> pipelineId,
+      Value<double?> probability,
       Value<String?> lostReason,
       Value<String?> notes,
       Value<DateTime?> expectedCloseDate,
@@ -5560,23 +5907,8 @@ class $$DealsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get stageId => $composableBuilder(
-    column: $table.stageId,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get pipelineId => $composableBuilder(
-    column: $table.pipelineId,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<double> get amount => $composableBuilder(
     column: $table.amount,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<double> get probability => $composableBuilder(
-    column: $table.probability,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5587,6 +5919,21 @@ class $$DealsTableTableFilterComposer
 
   ColumnFilters<String> get status => $composableBuilder(
     column: $table.status,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get stageId => $composableBuilder(
+    column: $table.stageId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<String> get pipelineId => $composableBuilder(
+    column: $table.pipelineId,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get probability => $composableBuilder(
+    column: $table.probability,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5650,23 +5997,8 @@ class $$DealsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get stageId => $composableBuilder(
-    column: $table.stageId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get pipelineId => $composableBuilder(
-    column: $table.pipelineId,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<double> get amount => $composableBuilder(
     column: $table.amount,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<double> get probability => $composableBuilder(
-    column: $table.probability,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5677,6 +6009,21 @@ class $$DealsTableTableOrderingComposer
 
   ColumnOrderings<String> get status => $composableBuilder(
     column: $table.status,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get stageId => $composableBuilder(
+    column: $table.stageId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<String> get pipelineId => $composableBuilder(
+    column: $table.pipelineId,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get probability => $composableBuilder(
+    column: $table.probability,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5732,27 +6079,27 @@ class $$DealsTableTableAnnotationComposer
   GeneratedColumn<String> get stageName =>
       $composableBuilder(column: $table.stageName, builder: (column) => column);
 
-  GeneratedColumn<int> get stageId =>
-      $composableBuilder(column: $table.stageId, builder: (column) => column);
-
-  GeneratedColumn<int> get pipelineId => $composableBuilder(
-    column: $table.pipelineId,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<double> get amount =>
       $composableBuilder(column: $table.amount, builder: (column) => column);
-
-  GeneratedColumn<double> get probability => $composableBuilder(
-    column: $table.probability,
-    builder: (column) => column,
-  );
 
   GeneratedColumn<String> get currency =>
       $composableBuilder(column: $table.currency, builder: (column) => column);
 
   GeneratedColumn<String> get status =>
       $composableBuilder(column: $table.status, builder: (column) => column);
+
+  GeneratedColumn<String> get stageId =>
+      $composableBuilder(column: $table.stageId, builder: (column) => column);
+
+  GeneratedColumn<String> get pipelineId => $composableBuilder(
+    column: $table.pipelineId,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get probability => $composableBuilder(
+    column: $table.probability,
+    builder: (column) => column,
+  );
 
   GeneratedColumn<String> get lostReason => $composableBuilder(
     column: $table.lostReason,
@@ -5810,12 +6157,12 @@ class $$DealsTableTableTableManager
                 Value<int?> contactLocalId = const Value.absent(),
                 Value<String> title = const Value.absent(),
                 Value<String> stageName = const Value.absent(),
-                Value<int?> stageId = const Value.absent(),
-                Value<int?> pipelineId = const Value.absent(),
                 Value<double> amount = const Value.absent(),
-                Value<double> probability = const Value.absent(),
                 Value<String> currency = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<String?> stageId = const Value.absent(),
+                Value<String?> pipelineId = const Value.absent(),
+                Value<double?> probability = const Value.absent(),
                 Value<String?> lostReason = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<DateTime?> expectedCloseDate = const Value.absent(),
@@ -5827,12 +6174,12 @@ class $$DealsTableTableTableManager
                 contactLocalId: contactLocalId,
                 title: title,
                 stageName: stageName,
-                stageId: stageId,
-                pipelineId: pipelineId,
                 amount: amount,
-                probability: probability,
                 currency: currency,
                 status: status,
+                stageId: stageId,
+                pipelineId: pipelineId,
+                probability: probability,
                 lostReason: lostReason,
                 notes: notes,
                 expectedCloseDate: expectedCloseDate,
@@ -5846,12 +6193,12 @@ class $$DealsTableTableTableManager
                 Value<int?> contactLocalId = const Value.absent(),
                 required String title,
                 Value<String> stageName = const Value.absent(),
-                Value<int?> stageId = const Value.absent(),
-                Value<int?> pipelineId = const Value.absent(),
                 Value<double> amount = const Value.absent(),
-                Value<double> probability = const Value.absent(),
                 Value<String> currency = const Value.absent(),
                 Value<String> status = const Value.absent(),
+                Value<String?> stageId = const Value.absent(),
+                Value<String?> pipelineId = const Value.absent(),
+                Value<double?> probability = const Value.absent(),
                 Value<String?> lostReason = const Value.absent(),
                 Value<String?> notes = const Value.absent(),
                 Value<DateTime?> expectedCloseDate = const Value.absent(),
@@ -5863,12 +6210,12 @@ class $$DealsTableTableTableManager
                 contactLocalId: contactLocalId,
                 title: title,
                 stageName: stageName,
-                stageId: stageId,
-                pipelineId: pipelineId,
                 amount: amount,
-                probability: probability,
                 currency: currency,
                 status: status,
+                stageId: stageId,
+                pipelineId: pipelineId,
+                probability: probability,
                 lostReason: lostReason,
                 notes: notes,
                 expectedCloseDate: expectedCloseDate,

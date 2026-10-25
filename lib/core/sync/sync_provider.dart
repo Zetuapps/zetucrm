@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:async';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:drift/drift.dart';
@@ -154,6 +155,8 @@ class SyncNotifier extends Notifier<SyncState> {
           final isCustBool = c['is_customer'] == true || c['is_customer'] == 1 || c['is_customer'] == '1';
           final isActBool = c['is_active'] == true || c['is_active'] == 1 || c['is_active'] == '1' || c['is_active'] == null;
 
+          final customFieldsStr = c['custom_fields'] != null ? jsonEncode(c['custom_fields']) : null;
+
           if (existing == null) {
             await db.into(db.contactsTable).insert(
                   ContactsTableCompanion.insert(
@@ -164,11 +167,25 @@ class SyncNotifier extends Notifier<SyncState> {
                     lastName: Value(c['last_name']?.toString()),
                     email: Value(c['email']?.toString()),
                     phone: Value(c['phone']?.toString()),
+                    alternatePhone: Value(c['alternate_phone']?.toString()),
+                    tin: Value(c['tin']?.toString()),
+                    vrn: Value(c['vrn']?.toString()),
                     company: Value(c['company']?.toString()),
                     title: Value(c['title']?.toString()),
+                    infoSource: Value(c['info_source']?.toString()),
                     leadStatus: Value(c['lead_status']?.toString()),
+                    leadScore: Value((c['lead_score'] as num?)?.toInt() ?? 0),
                     isCustomer: Value(isCustBool),
+                    notes: Value(c['notes']?.toString()),
                     isActive: Value(isActBool),
+                    country: Value(c['country']?.toString()),
+                    state: Value(c['state']?.toString()),
+                    city: Value(c['city']?.toString()),
+                    address: Value(c['address']?.toString()),
+                    postalCode: Value(c['postal_code']?.toString()),
+                    website: Value(c['website']?.toString()),
+                    lifecycleStageId: Value(c['lifecycle_stage_id']?.toString()),
+                    customFieldsJson: Value(customFieldsStr),
                     localUpdatedAt: DateTime.now(),
                   ),
                 );
@@ -176,11 +193,28 @@ class SyncNotifier extends Notifier<SyncState> {
             await (db.update(db.contactsTable)..where((t) => t.serverId.equals(sId))).write(
               ContactsTableCompanion(
                 firstName: Value(displayName),
+                middleName: Value(c['middle_name']?.toString()),
+                lastName: Value(c['last_name']?.toString()),
                 email: Value(c['email']?.toString()),
                 phone: Value(c['phone']?.toString()),
+                alternatePhone: Value(c['alternate_phone']?.toString()),
+                tin: Value(c['tin']?.toString()),
+                vrn: Value(c['vrn']?.toString()),
                 company: Value(c['company']?.toString()),
+                title: Value(c['title']?.toString()),
+                infoSource: Value(c['info_source']?.toString()),
                 leadStatus: Value(c['lead_status']?.toString()),
+                leadScore: Value((c['lead_score'] as num?)?.toInt() ?? 0),
                 isCustomer: Value(isCustBool),
+                notes: Value(c['notes']?.toString()),
+                country: Value(c['country']?.toString()),
+                state: Value(c['state']?.toString()),
+                city: Value(c['city']?.toString()),
+                address: Value(c['address']?.toString()),
+                postalCode: Value(c['postal_code']?.toString()),
+                website: Value(c['website']?.toString()),
+                lifecycleStageId: Value(c['lifecycle_stage_id']?.toString()),
+                customFieldsJson: Value(customFieldsStr),
               ),
             );
           }

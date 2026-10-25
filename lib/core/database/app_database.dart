@@ -29,6 +29,14 @@ class ContactsTable extends Table {
   BoolColumn get isCustomer => boolean().withDefault(const Constant(false))();
   TextColumn get notes => text().nullable()();
   BoolColumn get isActive => boolean().withDefault(const Constant(true))();
+  TextColumn get country => text().nullable()();
+  TextColumn get state => text().nullable()();
+  TextColumn get city => text().nullable()();
+  TextColumn get address => text().nullable()();
+  TextColumn get postalCode => text().nullable()();
+  TextColumn get website => text().nullable()();
+  TextColumn get lifecycleStageId => text().nullable()();
+  TextColumn get customFieldsJson => text().nullable()();
   DateTimeColumn get localUpdatedAt => dateTime()();
   DateTimeColumn get serverUpdatedAt => dateTime().nullable()();
 }
@@ -62,12 +70,9 @@ class TasksTable extends Table {
   IntColumn get contactLocalId => integer().nullable()();
   TextColumn get title => text()();
   TextColumn get description => text().nullable()();
+  DateTimeColumn get dueDate => dateTime().nullable()();
   TextColumn get priority => text().withDefault(const Constant('medium'))(); // low, medium, high, urgent
   TextColumn get status => text().withDefault(const Constant('pending'))(); // pending, in_progress, completed, cancelled
-  DateTimeColumn get dueDate => dateTime().nullable()();
-  DateTimeColumn get completedAt => dateTime().nullable()();
-  TextColumn get notes => text().nullable()();
-  BoolColumn get reminderScheduled => boolean().withDefault(const Constant(false))();
   DateTimeColumn get localUpdatedAt => dateTime()();
 }
 
@@ -79,13 +84,13 @@ class DealsTable extends Table {
   TextColumn get syncStatus => text().withDefault(const Constant('pending_create'))();
   IntColumn get contactLocalId => integer().nullable()();
   TextColumn get title => text()();
-  TextColumn get stageName => text().withDefault(const Constant('Lead'))();
-  IntColumn get stageId => integer().nullable()();
-  IntColumn get pipelineId => integer().nullable()();
+  TextColumn get stageName => text().withDefault(const Constant('Qualification'))();
   RealColumn get amount => real().withDefault(const Constant(0.0))();
-  RealColumn get probability => real().withDefault(const Constant(100.0))();
   TextColumn get currency => text().withDefault(const Constant('USD'))();
   TextColumn get status => text().withDefault(const Constant('open'))(); // open, won, lost
+  TextColumn get stageId => text().nullable()();
+  TextColumn get pipelineId => text().nullable()();
+  RealColumn get probability => real().nullable()();
   TextColumn get lostReason => text().nullable()();
   TextColumn get notes => text().nullable()();
   DateTimeColumn get expectedCloseDate => dateTime().nullable()();
@@ -115,7 +120,7 @@ class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 2;
+  int get schemaVersion => 3;
 
   @override
   MigrationStrategy get migration => MigrationStrategy(
@@ -126,6 +131,16 @@ class AppDatabase extends _$AppDatabase {
             await m.addColumn(dealsTable, dealsTable.probability);
             await m.addColumn(dealsTable, dealsTable.lostReason);
             await m.addColumn(dealsTable, dealsTable.notes);
+          }
+          if (from < 3) {
+            await m.addColumn(contactsTable, contactsTable.country);
+            await m.addColumn(contactsTable, contactsTable.state);
+            await m.addColumn(contactsTable, contactsTable.city);
+            await m.addColumn(contactsTable, contactsTable.address);
+            await m.addColumn(contactsTable, contactsTable.postalCode);
+            await m.addColumn(contactsTable, contactsTable.website);
+            await m.addColumn(contactsTable, contactsTable.lifecycleStageId);
+            await m.addColumn(contactsTable, contactsTable.customFieldsJson);
           }
         },
       );

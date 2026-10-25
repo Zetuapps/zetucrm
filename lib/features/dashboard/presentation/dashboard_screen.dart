@@ -1,3 +1,4 @@
+import '../../scorecard/presentation/scorecard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -620,17 +621,94 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               onTap: () => _showLogActivitySheet(context),
             ),
             _buildQuickActionButton(
-              label: 'Ledger',
-              icon: LucideIcons.bookOpen,
+              label: 'Scorecard',
+              icon: LucideIcons.target,
               isDark: isDark,
               onTap: () => Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => const FinanceScreen(initialTabIndex: 2)),
+                MaterialPageRoute(builder: (_) => const ScorecardScreen()),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 20),
+
+        // Operating Cadence & Scorecard Live Banner
+        GestureDetector(
+          onTap: () => Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const ScorecardScreen()),
+          ),
+          child: Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: isDark
+                    ? [const Color(0xFF1B253D), const Color(0xFF151C2E)]
+                    : [const Color(0xFFEBF1FF), const Color(0xFFF5F8FF)],
+              ),
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: isDark ? const Color(0xFF2B3A5E) : const Color(0xFFCFDCFF),
+              ),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1B59F8),
+                    borderRadius: BorderRadius.circular(14),
+                  ),
+                  child: const Icon(LucideIcons.target, color: Colors.white, size: 22),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Operating Cadence & Scorecard',
+                            style: TextStyle(
+                              color: isDark ? Colors.white : const Color(0xFF101828),
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                            ),
+                          ),
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF12B76A).withOpacity(0.15),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'LIVE',
+                              style: TextStyle(color: Color(0xFF12B76A), fontSize: 9, fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Track and log daily targets, execution velocity, and auto CRM metrics.',
+                        style: TextStyle(
+                          color: isDark ? Colors.white60 : const Color(0xFF667085),
+                          fontSize: 11,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(LucideIcons.chevronRight, size: 20, color: Color(0xFF1B59F8)),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: 20),
 
         // 6. TASKS DUE TODAY SECTION (Clean modern dashboard card)
         Row(

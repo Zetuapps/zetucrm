@@ -1,3 +1,4 @@
+import '../../scorecard/presentation/scorecard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -136,6 +137,42 @@ class SettingsScreen extends ConsumerWidget {
                   ],
                 ),
               ],
+            ),
+          ),
+          const SizedBox(height: 20),
+
+          // Performance & Cadence
+          Text(
+            'PERFORMANCE & CADENCE',
+            style: AppTypography.overline(
+              color: isDark ? AppColors.grey400 : AppColors.grey600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          AppCard(
+            child: ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1B59F8).withOpacity(0.12),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Icon(LucideIcons.target, color: Color(0xFF1B59F8), size: 20),
+              ),
+              title: Text(
+                'Scorecard & Operating Cadence',
+                style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
+              ),
+              subtitle: Text(
+                'Track sales velocity, daily goals, and execution targets',
+                style: AppTypography.caption(color: AppColors.grey500),
+              ),
+              trailing: const Icon(LucideIcons.chevronRight, size: 18),
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ScorecardScreen()),
+              ),
             ),
           ),
           const SizedBox(height: 20),

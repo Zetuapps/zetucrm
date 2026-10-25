@@ -146,9 +146,6 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                                     .write(
                                       TasksTableCompanion(
                                         status: drift.Value(newStatus),
-                                        completedAt: drift.Value(
-                                          val ?? false ? DateTime.now() : null,
-                                        ),
                                         localUpdatedAt: drift.Value(
                                           DateTime.now(),
                                         ),
