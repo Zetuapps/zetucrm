@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'core/auth/auth_provider.dart';
 import 'core/notifications/local_notification_service.dart';
+import 'core/notifications/firebase_messaging_service.dart';
 import 'shared/theme/app_theme.dart';
 import 'shared/theme/theme_provider.dart';
 import 'shared/components/splash_screen.dart';
@@ -20,13 +21,35 @@ void main() async {
   );
 }
 
-class ZetuCrmApp extends ConsumerWidget {
+class ZetuCrmApp extends ConsumerStatefulWidget {
   const ZetuCrmApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<ZetuCrmApp> createState() => _ZetuCrmAppState();
+}
+
+class _ZetuCrmAppState extends ConsumerState<ZetuCrmApp> {
+  @override
+  void initState() {
+    super.initState();
+    // Initialize Firebase Messaging safely
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FirebaseMessagingService.init(ref);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final themeMode = ref.watch(themeProvider);
+
+    // Whenever user is authenticated, ensure their device FCM token is synced to the backend
+    ref.listen<AuthState>(authProvider, (previous, next) {
+      if (!previous!.isAuthenticated && next.isAuthenticated) {
+        final apiClient = ref.read(apiClientProvider);
+        FirebaseMessagingService.syncToken(apiClient);
+      }
+    });
 
     Widget homeScreen;
     if (authState.isInitializing) {

@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dio/dio.dart';
 import '../network/api_client.dart';
+import '../notifications/firebase_messaging_service.dart';
 
 class UserProfile {
   final String id;
@@ -149,6 +150,9 @@ class AuthNotifier extends Notifier<AuthState> {
             companies: companiesList,
             activeCompany: active,
           );
+
+          // Automatically sync FCM push notification device token
+          FirebaseMessagingService.syncToken(apiClient);
           return;
         }
       } catch (_) {}

@@ -11,6 +11,8 @@ import '../../finance/presentation/finance_screen.dart';
 import '../../finance/presentation/sheets/expense_form_sheet.dart';
 import '../../finance/presentation/sheets/requisition_form_sheet.dart';
 import 'dashboard_provider.dart';
+import '../../../core/notifications/notifications_provider.dart';
+import '../../../core/notifications/notifications_screen.dart';
 import 'package:drift/drift.dart' hide Column;
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -28,6 +30,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     final dashboardAsync = ref.watch(dashboardProvider);
     final authState = ref.watch(authProvider);
     final userName = authState.user?.firstName ?? 'User';
+    final notifState = ref.watch(notificationsProvider);
 
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF10141D) : const Color(0xFFF7F9FC),
@@ -44,7 +47,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Top Custom Header
-                _buildTopAppBar(context, isDark, userName),
+                _buildTopAppBar(context, isDark, userName, notifState.unreadCount),
                 const SizedBox(height: 24),
 
                 // Main Reactive Body handling API AsyncValue
@@ -61,7 +64,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
     );
   }
 
-  Widget _buildTopAppBar(BuildContext context, bool isDark, String userName) {
+  Widget _buildTopAppBar(BuildContext context, bool isDark, String userName, int unreadCount) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -96,14 +99,44 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         // Action Buttons
         Row(
           children: [
-            _buildIconButton(
-              icon: LucideIcons.bell,
-              isDark: isDark,
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(content: Text('No new notifications')),
-                );
-              },
+            Stack(
+              clipBehavior: Clip.none,
+              children: [
+                _buildIconButton(
+                  icon: LucideIcons.bell,
+                  isDark: isDark,
+                  onTap: () {
+                    NotificationsScreen.showAsBottomSheet(context);
+                  },
+                ),
+                if (unreadCount > 0)
+                  Positioned(
+                    top: -2,
+                    right: -2,
+                    child: Container(
+                      padding: const EdgeInsets.all(4),
+                      decoration: const BoxDecoration(
+                        color: Color(0xFFE63946),
+                        shape: BoxShape.circle,
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 18,
+                        minHeight: 18,
+                      ),
+                      child: Center(
+                        child: Text(
+                          unreadCount > 99 ? '99+' : '$unreadCount',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            height: 1,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(width: 10),
             _buildIconButton(

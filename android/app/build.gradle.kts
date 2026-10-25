@@ -3,6 +3,7 @@ plugins {
     id("kotlin-android")
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id("dev.flutter.flutter-gradle-plugin")
+    id("com.google.gms.google-services") apply false
 }
 
 android {
@@ -10,7 +11,6 @@ android {
     compileSdk = 37
     // ndkVersion = flutter.ndkVersion
     ndkVersion = "29.0.13113456"
-
 
     compileOptions {
         isCoreLibraryDesugaringEnabled = true
@@ -43,4 +43,9 @@ flutter {
 
 dependencies {
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+
+// Automatically apply Google Services plugin when google-services.json is present
+if (file("google-services.json").exists()) {
+    apply(plugin = "com.google.gms.google-services")
 }
