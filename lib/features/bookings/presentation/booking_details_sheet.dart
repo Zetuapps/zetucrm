@@ -7,6 +7,7 @@ import 'bookings_provider.dart';
 import '../../../core/utils/communication_utils.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BookingDetailsSheet extends ConsumerStatefulWidget {
   final BookingModel booking;
@@ -14,7 +15,8 @@ class BookingDetailsSheet extends ConsumerStatefulWidget {
   const BookingDetailsSheet({super.key, required this.booking});
 
   @override
-  ConsumerState<BookingDetailsSheet> createState() => _BookingDetailsSheetState();
+  ConsumerState<BookingDetailsSheet> createState() =>
+      _BookingDetailsSheetState();
 }
 
 class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
@@ -62,7 +64,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text('Are you sure you want to cancel this booking? This will free the slot for other clients.'),
+            const Text(
+              'Are you sure you want to cancel this booking? This will free the slot for other clients.',
+            ),
             const SizedBox(height: 12),
             TextField(
               controller: reasonCtrl,
@@ -86,7 +90,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
               Navigator.pop(ctx);
               setState(() => _isProcessing = true);
               try {
-                await ref.read(bookingsProvider.notifier).updateStatus(
+                await ref
+                    .read(bookingsProvider.notifier)
+                    .updateStatus(
                       _currentBooking.id,
                       'cancelled',
                       reason: reasonCtrl.text.trim(),
@@ -118,7 +124,10 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                 _showSnack('Failed to cancel: $e', isError: true);
               }
             },
-            child: const Text('Confirm Cancel', style: TextStyle(color: Colors.white)),
+            child: const Text(
+              'Confirm Cancel',
+              style: TextStyle(color: Colors.white),
+            ),
           ),
         ],
       ),
@@ -152,7 +161,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
 
         setState(() => _isProcessing = true);
         try {
-          await ref.read(bookingsProvider.notifier).reschedule(
+          await ref
+              .read(bookingsProvider.notifier)
+              .reschedule(
                 _currentBooking.id,
                 newStart,
                 reason: 'Rescheduled by host via mobile app',
@@ -162,7 +173,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
               id: _currentBooking.id,
               reference: _currentBooking.reference,
               startAt: newStart,
-              endAt: newStart.add(Duration(minutes: _currentBooking.durationMinutes)),
+              endAt: newStart.add(
+                Duration(minutes: _currentBooking.durationMinutes),
+              ),
               guestName: _currentBooking.guestName,
               guestEmail: _currentBooking.guestEmail,
               guestPhone: _currentBooking.guestPhone,
@@ -177,7 +190,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
             );
             _isProcessing = false;
           });
-          _showSnack('Appointment rescheduled to ${newStart.toString().substring(0, 16)}');
+          _showSnack(
+            'Appointment rescheduled to ${newStart.toString().substring(0, 16)}',
+          );
         } catch (e) {
           setState(() => _isProcessing = false);
           _showSnack('Failed to reschedule: $e', isError: true);
@@ -189,7 +204,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
   void _markCompleted() async {
     setState(() => _isProcessing = true);
     try {
-      await ref.read(bookingsProvider.notifier).updateStatus(_currentBooking.id, 'completed');
+      await ref
+          .read(bookingsProvider.notifier)
+          .updateStatus(_currentBooking.id, 'completed');
       setState(() {
         _currentBooking = BookingModel(
           id: _currentBooking.id,
@@ -255,7 +272,10 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                 children: [
                   Text(
                     b.reference,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
                   ),
                   Text(
                     b.eventType?.title ?? 'Appointment',
@@ -267,7 +287,10 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                 ],
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 4,
+                ),
                 decoration: BoxDecoration(
                   color: statusColor.withValues(alpha: 0.15),
                   borderRadius: BorderRadius.circular(12),
@@ -297,10 +320,14 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFF8FAFC),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                       ),
                     ),
                     child: Column(
@@ -308,17 +335,29 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                       children: [
                         Row(
                           children: [
-                            const Icon(LucideIcons.calendar, size: 18, color: Color(0xFF1B59F8)),
+                            const Icon(
+                              LucideIcons.calendar,
+                              size: 18,
+                              color: Color(0xFF1B59F8),
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               b.startAt.toString().substring(0, 10),
-                              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15,
+                              ),
                             ),
                             const Spacer(),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 8,
+                                vertical: 3,
+                              ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1B59F8).withValues(alpha: 0.1),
+                                color: const Color(
+                                  0xFF1B59F8,
+                                ).withValues(alpha: 0.1),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -335,18 +374,25 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                         const SizedBox(height: 8),
                         Row(
                           children: [
-                            const Icon(LucideIcons.clock, size: 18, color: Color(0xFF1B59F8)),
+                            const Icon(
+                              LucideIcons.clock,
+                              size: 18,
+                              color: Color(0xFF1B59F8),
+                            ),
                             const SizedBox(width: 8),
                             Text(
                               '${b.startAt.toString().substring(11, 16)} - ${b.endAt.toString().substring(11, 16)}',
                               style: TextStyle(
                                 fontSize: 14,
-                                color: isDark ? Colors.white70 : Colors.grey.shade700,
+                                color: isDark
+                                    ? Colors.white70
+                                    : Colors.grey.shade700,
                               ),
                             ),
                           ],
                         ),
-                        if (b.meetingUrl != null && b.meetingUrl!.isNotEmpty) ...[
+                        if (b.meetingUrl != null &&
+                            b.meetingUrl!.isNotEmpty) ...[
                           const SizedBox(height: 12),
                           InkWell(
                             onTap: () => launchUrl(
@@ -354,16 +400,29 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                               mode: LaunchMode.externalApplication,
                             ),
                             child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 8,
+                              ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF10B981).withValues(alpha: 0.15),
+                                color: const Color(
+                                  0xFF10B981,
+                                ).withValues(alpha: 0.15),
                                 borderRadius: BorderRadius.circular(8),
-                                border: Border.all(color: const Color(0xFF10B981).withValues(alpha: 0.3)),
+                                border: Border.all(
+                                  color: const Color(
+                                    0xFF10B981,
+                                  ).withValues(alpha: 0.3),
+                                ),
                               ),
                               child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  const Icon(LucideIcons.video, size: 16, color: Color(0xFF10B981)),
+                                  const Icon(
+                                    LucideIcons.video,
+                                    size: 16,
+                                    color: Color(0xFF10B981),
+                                  ),
                                   const SizedBox(width: 6),
                                   const Text(
                                     'Join Google Meet Video Call',
@@ -374,7 +433,11 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                                     ),
                                   ),
                                   const SizedBox(width: 4),
-                                  const Icon(LucideIcons.externalLink, size: 13, color: Color(0xFF10B981)),
+                                  const Icon(
+                                    LucideIcons.externalLink,
+                                    size: 13,
+                                    color: Color(0xFF10B981),
+                                  ),
                                 ],
                               ),
                             ),
@@ -388,17 +451,23 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                   // Guest / Client Info Card
                   Text(
                     'Guest / Client Details',
-                    style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
+                    style: AppTypography.subtitle2(
+                      color: isDark ? Colors.white : AppColors.grey900,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(14),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+                      color: isDark
+                          ? const Color(0xFF0F172A)
+                          : const Color(0xFFF8FAFC),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                        color: isDark
+                            ? const Color(0xFF334155)
+                            : const Color(0xFFE2E8F0),
                       ),
                     ),
                     child: Column(
@@ -408,10 +477,17 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                           children: [
                             CircleAvatar(
                               radius: 18,
-                              backgroundColor: const Color(0xFF1B59F8).withValues(alpha: 0.15),
+                              backgroundColor: const Color(
+                                0xFF1B59F8,
+                              ).withValues(alpha: 0.15),
                               child: Text(
-                                b.guestName.isNotEmpty ? b.guestName[0].toUpperCase() : 'G',
-                                style: const TextStyle(color: Color(0xFF1B59F8), fontWeight: FontWeight.bold),
+                                b.guestName.isNotEmpty
+                                    ? b.guestName[0].toUpperCase()
+                                    : 'G',
+                                style: const TextStyle(
+                                  color: Color(0xFF1B59F8),
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                             const SizedBox(width: 10),
@@ -421,12 +497,19 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                                 children: [
                                   Text(
                                     b.guestName,
-                                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
                                   ),
-                                  if (b.guestCompany != null && b.guestCompany!.isNotEmpty)
+                                  if (b.guestCompany != null &&
+                                      b.guestCompany!.isNotEmpty)
                                     Text(
                                       b.guestCompany!,
-                                      style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                                      style: TextStyle(
+                                        color: Colors.grey.shade500,
+                                        fontSize: 12,
+                                      ),
                                     ),
                                 ],
                               ),
@@ -437,36 +520,70 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                         if (b.guestEmail.isNotEmpty)
                           Row(
                             children: [
-                              const Icon(LucideIcons.mail, size: 15, color: Colors.grey),
+                              const Icon(
+                                LucideIcons.mail,
+                                size: 15,
+                                color: Colors.grey,
+                              ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   b.guestEmail,
-                                  style: TextStyle(fontSize: 13, color: isDark ? Colors.white70 : Colors.grey.shade700),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.grey.shade700,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
-                        if (b.guestPhone != null && b.guestPhone!.isNotEmpty) ...[
+                        if (b.guestPhone != null &&
+                            b.guestPhone!.isNotEmpty) ...[
                           const SizedBox(height: 8),
                           Row(
                             children: [
-                              const Icon(LucideIcons.phone, size: 15, color: Colors.grey),
+                              const Icon(
+                                LucideIcons.phone,
+                                size: 15,
+                                color: Colors.grey,
+                              ),
                               const SizedBox(width: 8),
                               Expanded(
                                 child: Text(
                                   b.guestPhone!,
-                                  style: TextStyle(fontSize: 13, color: isDark ? Colors.white70 : Colors.grey.shade700),
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isDark
+                                        ? Colors.white70
+                                        : Colors.grey.shade700,
+                                  ),
                                 ),
                               ),
                               // Quick WhatsApp button
                               IconButton(
                                 constraints: const BoxConstraints(),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                icon: const Icon(LucideIcons.messageSquare, color: Color(0xFF25D366), size: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                // icon: const Icon(LucideIcons.messageSquare, color: Color(0xFF25D366), size: 20),
+
+                                //                                child: const FaIcon(
+                                //   FontAwesomeIcons.whatsapp,
+                                //   size: 16,
+                                //   color: Color(0xFF25D366),
+                                // ),
+                                icon: const FaIcon(
+                                  FontAwesomeIcons.whatsapp,
+                                  color: Color(0xFF25D366),
+                                  size: 20,
+                                ),
                                 tooltip: 'WhatsApp Client',
                                 onPressed: () {
-                                  final msg = 'Hello ${b.guestName}, regarding our upcoming booking "${b.eventType?.title ?? 'Meeting'}" on ${b.startAt.toString().substring(0, 16)}...';
+                                  final msg =
+                                      'Hello ${b.guestName}, regarding our upcoming booking "${b.eventType?.title ?? 'Meeting'}" on ${b.startAt.toString().substring(0, 16)}...';
                                   CommunicationUtils.openWhatsApp(
                                     context: context,
                                     phone: b.guestPhone,
@@ -477,8 +594,15 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                               // Quick Call button
                               IconButton(
                                 constraints: const BoxConstraints(),
-                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                                icon: const Icon(LucideIcons.phoneCall, color: Color(0xFF1B59F8), size: 20),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 8,
+                                  vertical: 4,
+                                ),
+                                icon: const Icon(
+                                  LucideIcons.phoneCall,
+                                  color: Color(0xFF1B59F8),
+                                  size: 20,
+                                ),
                                 tooltip: 'Call Client',
                                 onPressed: () {
                                   CommunicationUtils.makeCall(
@@ -501,7 +625,9 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                   if (b.host != null) ...[
                     Text(
                       'Assigned Host',
-                      style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
+                      style: AppTypography.subtitle2(
+                        color: isDark ? Colors.white : AppColors.grey900,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     ListTile(
@@ -509,15 +635,27 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                       leading: CircleAvatar(
                         radius: 16,
                         backgroundColor: Colors.purple.withValues(alpha: 0.15),
-                        child: const Icon(LucideIcons.user, size: 16, color: Colors.purple),
+                        child: const Icon(
+                          LucideIcons.user,
+                          size: 16,
+                          color: Colors.purple,
+                        ),
                       ),
                       title: Text(
-                        b.host!.displayName.isNotEmpty ? b.host!.displayName : 'Assigned Team Member',
-                        style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+                        b.host!.displayName.isNotEmpty
+                            ? b.host!.displayName
+                            : 'Assigned Team Member',
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                       subtitle: Text(
                         b.host!.email ?? '',
-                        style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.grey.shade500,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -527,19 +665,26 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                   if (b.answers.isNotEmpty) ...[
                     Text(
                       'Meeting Notes & Answers',
-                      style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
+                      style: AppTypography.subtitle2(
+                        color: isDark ? Colors.white : AppColors.grey900,
+                      ),
                     ),
                     const SizedBox(height: 6),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+                        color: isDark
+                            ? const Color(0xFF0F172A)
+                            : const Color(0xFFF8FAFC),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: Text(
                         b.answers['notes']?.toString() ?? b.answers.toString(),
-                        style: TextStyle(fontSize: 13, color: isDark ? Colors.white70 : Colors.grey.shade700),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: isDark ? Colors.white70 : Colors.grey.shade700,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -552,14 +697,20 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                       decoration: BoxDecoration(
                         color: Colors.red.withValues(alpha: 0.1),
                         borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.red.withValues(alpha: 0.3)),
+                        border: Border.all(
+                          color: Colors.red.withValues(alpha: 0.3),
+                        ),
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
                             'Cancellation Reason',
-                            style: TextStyle(color: Colors.redAccent, fontWeight: FontWeight.bold, fontSize: 13),
+                            style: TextStyle(
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
+                            ),
                           ),
                           const SizedBox(height: 4),
                           Text(
@@ -615,8 +766,15 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                       backgroundColor: const Color(0xFF10B981),
                       padding: const EdgeInsets.symmetric(vertical: 12),
                     ),
-                    icon: const Icon(LucideIcons.check, size: 16, color: Colors.white),
-                    label: const Text('Complete', style: TextStyle(color: Colors.white)),
+                    icon: const Icon(
+                      LucideIcons.check,
+                      size: 16,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      'Complete',
+                      style: TextStyle(color: Colors.white),
+                    ),
                     onPressed: _markCompleted,
                   ),
                 ),
@@ -630,8 +788,18 @@ class _BookingDetailsSheetState extends ConsumerState<BookingDetailsSheet> {
                   backgroundColor: const Color(0xFF1B59F8),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                 ),
-                icon: const Icon(LucideIcons.calendarCheck, size: 18, color: Colors.white),
-                label: const Text('Re-schedule / Re-confirm Appointment', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                icon: const Icon(
+                  LucideIcons.calendarCheck,
+                  size: 18,
+                  color: Colors.white,
+                ),
+                label: const Text(
+                  'Re-schedule / Re-confirm Appointment',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onPressed: _promptReschedule,
               ),
             ),

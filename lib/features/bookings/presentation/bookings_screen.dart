@@ -10,6 +10,7 @@ import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
 import '../../../shared/components/empty_state.dart';
 import '../../../shared/components/app_shimmer.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class BookingsScreen extends ConsumerStatefulWidget {
   const BookingsScreen({super.key});
@@ -66,15 +67,22 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F172A) : const Color(0xFFF8FAFC),
+      backgroundColor: isDark
+          ? const Color(0xFF0F172A)
+          : const Color(0xFFF8FAFC),
       appBar: AppBar(
         title: Text(
           'Appointments & Bookings',
-          style: AppTypography.h3(color: isDark ? Colors.white : AppColors.grey900),
+          style: AppTypography.h3(
+            color: isDark ? Colors.white : AppColors.grey900,
+          ),
         ),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.calendarPlus, color: Color(0xFF1B59F8)),
+            icon: const Icon(
+              LucideIcons.calendarPlus,
+              color: Color(0xFF1B59F8),
+            ),
             tooltip: 'Schedule Appointment',
             onPressed: _openCreateBooking,
           ),
@@ -98,13 +106,33 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 children: [
-                  _buildStatCard('Total', state.stats['total'] ?? 0, const Color(0xFF1B59F8), isDark),
+                  _buildStatCard(
+                    'Total',
+                    state.stats['total'] ?? 0,
+                    const Color(0xFF1B59F8),
+                    isDark,
+                  ),
                   const SizedBox(width: 8),
-                  _buildStatCard('Upcoming', state.stats['upcoming'] ?? 0, const Color(0xFF10B981), isDark),
+                  _buildStatCard(
+                    'Upcoming',
+                    state.stats['upcoming'] ?? 0,
+                    const Color(0xFF10B981),
+                    isDark,
+                  ),
                   const SizedBox(width: 8),
-                  _buildStatCard('Completed', state.stats['completed'] ?? 0, const Color(0xFF3B82F6), isDark),
+                  _buildStatCard(
+                    'Completed',
+                    state.stats['completed'] ?? 0,
+                    const Color(0xFF3B82F6),
+                    isDark,
+                  ),
                   const SizedBox(width: 8),
-                  _buildStatCard('Cancelled', state.stats['cancelled'] ?? 0, const Color(0xFFEF4444), isDark),
+                  _buildStatCard(
+                    'Cancelled',
+                    state.stats['cancelled'] ?? 0,
+                    const Color(0xFFEF4444),
+                    isDark,
+                  ),
                 ],
               ),
             ),
@@ -122,20 +150,33 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                           icon: const Icon(Icons.clear, size: 16),
                           onPressed: () {
                             _searchCtrl.clear();
-                            ref.read(bookingsProvider.notifier).setSearchQuery('');
+                            ref
+                                .read(bookingsProvider.notifier)
+                                .setSearchQuery('');
                           },
                         )
                       : null,
                   filled: true,
                   fillColor: isDark ? const Color(0xFF1E293B) : Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16),
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 16,
+                  ),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+                    borderSide: BorderSide(
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0),
+                    ),
                   ),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0)),
+                    borderSide: BorderSide(
+                      color: isDark
+                          ? const Color(0xFF334155)
+                          : const Color(0xFFE2E8F0),
+                    ),
                   ),
                 ),
                 onChanged: (val) {
@@ -150,15 +191,35 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
               child: Row(
                 children: [
-                  _buildFilterChip('All Bookings', 'all', state.selectedStatusFilter),
+                  _buildFilterChip(
+                    'All Bookings',
+                    'all',
+                    state.selectedStatusFilter,
+                  ),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Upcoming', 'upcoming', state.selectedStatusFilter),
+                  _buildFilterChip(
+                    'Upcoming',
+                    'upcoming',
+                    state.selectedStatusFilter,
+                  ),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Confirmed', 'confirmed', state.selectedStatusFilter),
+                  _buildFilterChip(
+                    'Confirmed',
+                    'confirmed',
+                    state.selectedStatusFilter,
+                  ),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Completed', 'completed', state.selectedStatusFilter),
+                  _buildFilterChip(
+                    'Completed',
+                    'completed',
+                    state.selectedStatusFilter,
+                  ),
                   const SizedBox(width: 8),
-                  _buildFilterChip('Cancelled', 'cancelled', state.selectedStatusFilter),
+                  _buildFilterChip(
+                    'Cancelled',
+                    'cancelled',
+                    state.selectedStatusFilter,
+                  ),
                 ],
               ),
             ),
@@ -176,12 +237,21 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(LucideIcons.alertCircle, color: Colors.redAccent, size: 40),
+                          const Icon(
+                            LucideIcons.alertCircle,
+                            color: Colors.redAccent,
+                            size: 40,
+                          ),
                           const SizedBox(height: 12),
-                          Text(state.errorMessage!, style: const TextStyle(color: Colors.redAccent)),
+                          Text(
+                            state.errorMessage!,
+                            style: const TextStyle(color: Colors.redAccent),
+                          ),
                           const SizedBox(height: 12),
                           ElevatedButton(
-                            onPressed: () => ref.read(bookingsProvider.notifier).loadBookings(refresh: true),
+                            onPressed: () => ref
+                                .read(bookingsProvider.notifier)
+                                .loadBookings(refresh: true),
                             child: const Text('Retry'),
                           ),
                         ],
@@ -202,7 +272,10 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                   }
 
                   return ListView.separated(
-                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
                     itemCount: state.bookings.length,
                     separatorBuilder: (_, __) => const SizedBox(height: 10),
                     itemBuilder: (context, index) {
@@ -215,10 +288,14 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF1E293B) : Colors.white,
+                            color: isDark
+                                ? const Color(0xFF1E293B)
+                                : Colors.white,
                             borderRadius: BorderRadius.circular(14),
                             border: Border.all(
-                              color: isDark ? const Color(0xFF334155) : const Color(0xFFE2E8F0),
+                              color: isDark
+                                  ? const Color(0xFF334155)
+                                  : const Color(0xFFE2E8F0),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -233,12 +310,18 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                             children: [
                               // Reference & Status
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: const Color(0xFF1B59F8).withValues(alpha: 0.1),
+                                      color: const Color(
+                                        0xFF1B59F8,
+                                      ).withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
@@ -251,9 +334,14 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                                     ),
                                   ),
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 8,
+                                      vertical: 2,
+                                    ),
                                     decoration: BoxDecoration(
-                                      color: statusColor.withValues(alpha: 0.12),
+                                      color: statusColor.withValues(
+                                        alpha: 0.12,
+                                      ),
                                       borderRadius: BorderRadius.circular(10),
                                     ),
                                     child: Text(
@@ -272,12 +360,19 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                               // Guest name & Company
                               Text(
                                 b.guestName,
-                                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                ),
                               ),
-                              if (b.guestCompany != null && b.guestCompany!.isNotEmpty)
+                              if (b.guestCompany != null &&
+                                  b.guestCompany!.isNotEmpty)
                                 Text(
                                   b.guestCompany!,
-                                  style: TextStyle(color: Colors.grey.shade500, fontSize: 12),
+                                  style: TextStyle(
+                                    color: Colors.grey.shade500,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               const SizedBox(height: 10),
 
@@ -285,7 +380,9 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                               Row(
                                 children: [
                                   Icon(
-                                    b.meetingUrl != null ? LucideIcons.video : LucideIcons.calendar,
+                                    b.meetingUrl != null
+                                        ? LucideIcons.video
+                                        : LucideIcons.calendar,
                                     size: 15,
                                     color: const Color(0xFF1B59F8),
                                   ),
@@ -295,7 +392,9 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                                       '${b.eventType?.title ?? 'Appointment'} • ${b.startAt.toString().substring(0, 16)}',
                                       style: TextStyle(
                                         fontSize: 13,
-                                        color: isDark ? Colors.white70 : Colors.grey.shade700,
+                                        color: isDark
+                                            ? Colors.white70
+                                            : Colors.grey.shade700,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -306,33 +405,49 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
 
                               // Quick Actions Footer
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     '${b.durationMinutes} min consultation',
-                                    style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      color: Colors.grey.shade500,
+                                    ),
                                   ),
                                   Row(
                                     children: [
-                                      if (b.guestPhone != null && b.guestPhone!.isNotEmpty) ...[
+                                      if (b.guestPhone != null &&
+                                          b.guestPhone!.isNotEmpty) ...[
                                         // WhatsApp icon
                                         InkWell(
                                           onTap: () {
-                                            final msg = 'Hello ${b.guestName}, regarding our upcoming booking "${b.eventType?.title ?? 'Meeting'}" on ${b.startAt.toString().substring(0, 16)}...';
+                                            final msg =
+                                                'Hello ${b.guestName}, regarding our upcoming booking "${b.eventType?.title ?? 'Meeting'}" on ${b.startAt.toString().substring(0, 16)}...';
                                             CommunicationUtils.openWhatsApp(
                                               context: context,
                                               phone: b.guestPhone,
                                               prefilledMessage: msg,
                                             );
                                           },
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           child: Container(
                                             padding: const EdgeInsets.all(6),
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF25D366).withValues(alpha: 0.12),
-                                              borderRadius: BorderRadius.circular(8),
+                                              color: const Color(
+                                                0xFF25D366,
+                                              ).withValues(alpha: 0.12),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                            child: const Icon(LucideIcons.messageSquare, size: 16, color: Color(0xFF25D366)),
+                                            // child: const Icon(LucideIcons.WhatsApp, size: 16, color: Color(0xFF25D366)),
+                                            child: const FaIcon(
+                                              FontAwesomeIcons.whatsapp,
+                                              size: 16,
+                                              color: Color(0xFF25D366),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(width: 8),
@@ -346,20 +461,33 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
                                               ref: ref,
                                             );
                                           },
-                                          borderRadius: BorderRadius.circular(8),
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
                                           child: Container(
                                             padding: const EdgeInsets.all(6),
                                             decoration: BoxDecoration(
-                                              color: const Color(0xFF1B59F8).withValues(alpha: 0.12),
-                                              borderRadius: BorderRadius.circular(8),
+                                              color: const Color(
+                                                0xFF1B59F8,
+                                              ).withValues(alpha: 0.12),
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
                                             ),
-                                            child: const Icon(LucideIcons.phoneCall, size: 16, color: Color(0xFF1B59F8)),
+                                            child: const Icon(
+                                              LucideIcons.phoneCall,
+                                              size: 16,
+                                              color: Color(0xFF1B59F8),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(width: 8),
                                       ],
                                       // View Details link
-                                      const Icon(LucideIcons.chevronRight, size: 18, color: Colors.grey),
+                                      const Icon(
+                                        LucideIcons.chevronRight,
+                                        size: 18,
+                                        color: Colors.grey,
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -392,12 +520,19 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
           children: [
             Text(
               count.toString(),
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: color),
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+                color: color,
+              ),
             ),
             const SizedBox(height: 2),
             Text(
               label,
-              style: TextStyle(fontSize: 10, color: isDark ? Colors.white60 : Colors.grey.shade600),
+              style: TextStyle(
+                fontSize: 10,
+                color: isDark ? Colors.white60 : Colors.grey.shade600,
+              ),
             ),
           ],
         ),
@@ -416,7 +551,8 @@ class _BookingsScreenState extends ConsumerState<BookingsScreen> {
         fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
         fontSize: 12,
       ),
-      onSelected: (_) => ref.read(bookingsProvider.notifier).setStatusFilter(value),
+      onSelected: (_) =>
+          ref.read(bookingsProvider.notifier).setStatusFilter(value),
     );
   }
 }
