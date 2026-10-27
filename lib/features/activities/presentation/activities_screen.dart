@@ -247,6 +247,7 @@ class _ActivitiesScreenState extends ConsumerState<ActivitiesScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'activities_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.add_rounded, color: Colors.white),
         label: Text('Log Activity', style: AppTypography.button()),

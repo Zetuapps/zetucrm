@@ -52,6 +52,7 @@ class _RequisitionsTabState extends ConsumerState<RequisitionsTab> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'requisitions_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(LucideIcons.filePlus, color: Colors.white),
         label: const Text('New Requisition', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

@@ -14,6 +14,7 @@ import '../../finance/presentation/sheets/requisition_form_sheet.dart';
 import 'dashboard_provider.dart';
 import '../../../core/notifications/notifications_provider.dart';
 import '../../../core/notifications/notifications_screen.dart';
+import '../../../shared/components/app_logo.dart';
 import 'package:drift/drift.dart' hide Column;
 
 class DashboardScreen extends ConsumerStatefulWidget {
@@ -70,31 +71,8 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Brand Logo
-        Container(
-          width: 44,
-          height: 44,
-          decoration: BoxDecoration(
-            color: const Color(0xFF1B59F8),
-            borderRadius: BorderRadius.circular(14),
-            boxShadow: [
-              BoxShadow(
-                color: const Color(0xFF1B59F8).withOpacity(0.25),
-                blurRadius: 10,
-                offset: const Offset(0, 4),
-              ),
-            ],
-          ),
-          child: const Center(
-            child: Text(
-              'G',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-                fontFamily: 'Roboto',
-              ),
-            ),
-          ),
+        const AppLogo(
+          height: 32,
         ),
 
         // Action Buttons

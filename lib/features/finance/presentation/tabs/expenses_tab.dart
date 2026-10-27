@@ -61,6 +61,7 @@ class _ExpensesTabState extends ConsumerState<ExpensesTab> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'expenses_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(LucideIcons.plus, color: Colors.white),
         label: const Text('Record Expense', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

@@ -309,6 +309,7 @@ class _ContactsScreenState extends ConsumerState<ContactsScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'contacts_fab',
         backgroundColor: const Color(0xFFFF5722),
         elevation: 6,
         onPressed: () => _openContactForm(),

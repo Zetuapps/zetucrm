@@ -10,6 +10,7 @@ import '../../../shared/theme/theme_provider.dart';
 import '../../../shared/components/app_card.dart';
 import '../../../shared/components/app_chip.dart';
 import '../../../shared/components/app_button.dart';
+import '../../../shared/components/app_logo.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
@@ -150,29 +151,39 @@ class SettingsScreen extends ConsumerWidget {
           ),
           const SizedBox(height: 8),
           AppCard(
-            child: ListTile(
-              contentPadding: EdgeInsets.zero,
-              leading: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color: const Color(0xFF1B59F8).withOpacity(0.12),
-                  borderRadius: BorderRadius.circular(10),
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const ScorecardScreen()),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1B59F8).withOpacity(0.12),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(LucideIcons.target, color: Color(0xFF1B59F8), size: 20),
                 ),
-                child: const Icon(LucideIcons.target, color: Color(0xFF1B59F8), size: 20),
-              ),
-              title: Text(
-                'Scorecard & Operating Cadence',
-                style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
-              ),
-              subtitle: Text(
-                'Track sales velocity, daily goals, and execution targets',
-                style: AppTypography.caption(color: AppColors.grey500),
-              ),
-              trailing: const Icon(LucideIcons.chevronRight, size: 18),
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const ScorecardScreen()),
-              ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Scorecard & Operating Cadence',
+                        style: AppTypography.subtitle2(color: isDark ? Colors.white : AppColors.grey900),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Track sales velocity, daily goals, and execution targets',
+                        style: AppTypography.caption(color: AppColors.grey500),
+                      ),
+                    ],
+                  ),
+                ),
+                const Icon(LucideIcons.chevronRight, size: 18),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -278,6 +289,26 @@ class SettingsScreen extends ConsumerWidget {
             icon: Icons.logout_rounded,
             onPressed: () => ref.read(authProvider.notifier).logout(),
           ),
+          const SizedBox(height: 36),
+
+          // App Branding Footer
+          Center(
+            child: Column(
+              children: [
+                const AppLogo(
+                  height: 24,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'ZetuCRM Mobile v1.0.0',
+                  style: AppTypography.caption(
+                    color: isDark ? Colors.white38 : AppColors.grey400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 16),
         ],
       ),
     );

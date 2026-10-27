@@ -34,15 +34,20 @@ class ScorecardRepository {
 
     final response = await _dio.get('/scorecard', queryParameters: query);
     if (response.statusCode == 200 && response.data != null) {
-      final json = response.data as Map<String, dynamic>;
-      final scJson = json['scorecard'] as Map<String, dynamic>? ?? {};
+      final rawData = response.data;
+      final json = rawData is Map ? Map<String, dynamic>.from(rawData) : <String, dynamic>{};
+      final scRaw = json['scorecard'];
+      final scJson = scRaw is Map ? Map<String, dynamic>.from(scRaw) : <String, dynamic>{};
       final histList = (json['history'] as List? ?? [])
-          .map((h) => HistoryDay.fromJson(h as Map<String, dynamic>))
+          .whereType<Map>()
+          .map((h) => HistoryDay.fromJson(Map<String, dynamic>.from(h)))
           .toList();
       final allMetricsList = (json['all_metrics'] as List? ?? [])
-          .map((m) => ScorecardMetricItem.fromJson(m as Map<String, dynamic>))
+          .whereType<Map>()
+          .map((m) => ScorecardMetricItem.fromJson(Map<String, dynamic>.from(m)))
           .toList();
-      final crmMeta = json['crm_meta'] as Map<String, dynamic>?;
+      final crmMetaRaw = json['crm_meta'];
+      final crmMeta = crmMetaRaw is Map ? Map<String, dynamic>.from(crmMetaRaw) : null;
 
       return ScorecardResponse(
         scorecard: ScorecardData.fromJson(scJson),

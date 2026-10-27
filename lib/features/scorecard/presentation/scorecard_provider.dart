@@ -204,7 +204,10 @@ class ScorecardNotifier extends Notifier<ScorecardState> {
     final sc = state.scorecard;
     if (sc == null) return;
 
-    final current = metric.valueNumber ?? (metric.currentValue is num ? (metric.currentValue as num).toDouble() : 0.0);
+    final current = metric.valueNumber ??
+        (metric.currentValue is num
+            ? (metric.currentValue as num).toDouble()
+            : (double.tryParse(metric.currentValue?.toString() ?? '') ?? 0.0));
     final nextVal = (current + delta) < 0 ? 0.0 : (current + delta);
     final target = double.tryParse(metric.targetValue ?? '1') ?? 1.0;
 

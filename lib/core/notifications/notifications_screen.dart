@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'notifications_provider.dart';
+import '../../features/bookings/data/bookings_repository.dart';
+import '../../features/bookings/presentation/booking_details_sheet.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
@@ -238,9 +240,24 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
         notifier.deleteNotification(notification.id);
       },
       child: GestureDetector(
-        onTap: () {
+        onTap: () async {
           if (!isRead) {
             notifier.markAsRead(notification.id);
+          }
+          final bookingId = notification.data['booking_id']?.toString();
+          if (bookingId != null && bookingId.isNotEmpty) {
+            try {
+              final repo = ref.read(bookingsRepositoryProvider);
+              final booking = await repo.getBooking(bookingId);
+              if (context.mounted) {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) => BookingDetailsSheet(booking: booking),
+                );
+              }
+            } catch (_) {}
           }
         },
         child: Container(
@@ -385,7 +402,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   IconData _getNotificationIcon(String type) {
-    if (type.contains('task')) {
+    if (type.contains('booking')) {
+      return LucideIcons.calendar;
+    } else if (type.contains('task')) {
       return LucideIcons.checkSquare;
     } else if (type.contains('scorecard')) {
       return LucideIcons.target;
@@ -400,7 +419,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   Color _getNotificationColor(String type) {
-    if (type.contains('task')) {
+    if (type.contains('booking')) {
+      return const Color(0xFF0284C7); // Sky blue
+    } else if (type.contains('task')) {
       return const Color(0xFF1B59F8); // Blue
     } else if (type.contains('scorecard')) {
       return const Color(0xFFF79009); // Amber

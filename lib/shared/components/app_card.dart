@@ -24,12 +24,22 @@ class AppCard extends StatelessWidget {
     final bg = backgroundColor ?? (isDark ? AppColors.darkCard : Colors.white);
     final border = borderColor ?? (isDark ? AppColors.darkBorder : AppColors.borderLight);
 
-    final cardWidget = Container(
+    Widget content = Padding(
       padding: padding,
-      decoration: BoxDecoration(
-        color: bg,
+      child: child,
+    );
+
+    if (onTap != null) {
+      content = InkWell(
+        onTap: onTap,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: border),
+        child: content,
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
         boxShadow: isDark
             ? []
             : [
@@ -40,17 +50,15 @@ class AppCard extends StatelessWidget {
                 ),
               ],
       ),
-      child: child,
+      child: Material(
+        color: bg,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+          side: BorderSide(color: border),
+        ),
+        clipBehavior: Clip.antiAlias,
+        child: content,
+      ),
     );
-
-    if (onTap != null) {
-      return InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(16),
-        child: cardWidget,
-      );
-    }
-
-    return cardWidget;
   }
 }

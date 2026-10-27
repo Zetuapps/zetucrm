@@ -57,7 +57,10 @@ class _ScorecardScreenState extends ConsumerState<ScorecardScreen> {
       return;
     }
 
-    final curr = metric.valueNumber ?? (metric.currentValue is num ? (metric.currentValue as num).toDouble() : 0.0);
+    final curr = metric.valueNumber ??
+        (metric.currentValue is num
+            ? (metric.currentValue as num).toDouble()
+            : (double.tryParse(metric.currentValue?.toString() ?? '') ?? 0.0));
     final textCtrl = TextEditingController(text: curr > 0 ? (curr % 1 == 0 ? curr.toInt().toString() : curr.toString()) : '');
     final notesCtrl = TextEditingController(text: metric.notes ?? '');
 
@@ -1019,7 +1022,10 @@ class _ScorecardScreenState extends ConsumerState<ScorecardScreen> {
       );
     }
 
-    final curr = m.valueNumber ?? (m.currentValue is num ? (m.currentValue as num).toDouble() : 0.0);
+    final curr = m.valueNumber ??
+        (m.currentValue is num
+            ? (m.currentValue as num).toDouble()
+            : (double.tryParse(m.currentValue?.toString() ?? '') ?? 0.0));
     final target = double.tryParse(m.targetValue ?? '0') ?? 0.0;
     final unit = m.unitLabel != null ? ' ${m.unitLabel}' : '';
 

@@ -98,6 +98,7 @@ class _GeneralLedgerTabState extends ConsumerState<GeneralLedgerTab> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'general_ledger_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(LucideIcons.plus, color: Colors.white),
         label: const Text('New Entry', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

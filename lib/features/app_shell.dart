@@ -13,6 +13,8 @@ import 'finance/presentation/finance_screen.dart';
 
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
+import 'bookings/presentation/bookings_screen.dart';
+
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
 
@@ -26,6 +28,7 @@ class _AppShellState extends ConsumerState<AppShell> {
   final List<Widget> _pages = const [
     DashboardScreen(),
     ContactsScreen(),
+    BookingsScreen(),
     DealsScreen(),
     FinanceScreen(),
     ActivitiesScreen(),
@@ -73,6 +76,10 @@ class _AppShellState extends ConsumerState<AppShell> {
           BottomNavigationBarItem(
             icon: Icon(LucideIcons.users),
             label: 'Contacts',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(LucideIcons.calendar),
+            label: 'Bookings',
           ),
           BottomNavigationBarItem(
             icon: Icon(LucideIcons.briefcase),

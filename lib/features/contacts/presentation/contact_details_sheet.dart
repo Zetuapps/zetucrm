@@ -8,6 +8,9 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:drift/drift.dart' hide Column;
 import '../../../core/sync/sync_provider.dart';
 import '../../../core/database/app_database.dart';
+import '../../../core/utils/communication_utils.dart';
+import '../../tasks/data/tasks_repository.dart';
+import '../../bookings/presentation/create_booking_sheet.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
 import '../../../shared/components/unified_form.dart';
@@ -51,20 +54,21 @@ class _ContactDetailsSheetState extends ConsumerState<ContactDetailsSheet> with 
   }
 
   void _callPhone(String? phone) {
-    if (phone != null && phone.trim().isNotEmpty) {
-      launchUrl(Uri.parse('tel:${phone.trim()}'));
-    } else {
-      _showSnack('No phone number recorded');
-    }
+    CommunicationUtils.makeCall(
+      context: context,
+      phone: phone,
+      contactName: widget.contact.firstName,
+      contactId: widget.contact.serverId,
+      ref: ref,
+    );
   }
 
   void _sendWhatsApp(String? phone) {
-    if (phone != null && phone.trim().isNotEmpty) {
-      final clean = phone.replaceAll(RegExp(r'[^0-9]'), '');
-      launchUrl(Uri.parse('https://wa.me/$clean'), mode: LaunchMode.externalApplication);
-    } else {
-      _showSnack('No phone number recorded');
-    }
+    CommunicationUtils.openWhatsApp(
+      context: context,
+      phone: phone,
+      prefilledMessage: 'Hello ${widget.contact.firstName}, regarding your inquiry with ZetuCRM...',
+    );
   }
 
   void _sendEmail(String? email) {
@@ -200,21 +204,19 @@ class _ContactDetailsSheetState extends ConsumerState<ContactDetailsSheet> with 
           subtitle: 'Create a task linked to ${c.firstName}',
           submitLabel: 'Create Task',
           onSubmit: () async {
-            final db = ref.read(databaseProvider);
-            await db.into(db.tasksTable).insert(
-                  TasksTableCompanion.insert(
-                    contactLocalId: Value(c.localId),
-                    title: titleCtrl.text.trim(),
-                    description: Value(descCtrl.text.trim()),
-                    dueDate: Value(DateTime.now().add(const Duration(days: 3))),
-                    priority: Value(priority),
-                    status: const Value('pending'),
-                    localUpdatedAt: DateTime.now(),
-                  ),
-                );
+            final repo = ref.read(tasksRepositoryProvider);
+            await repo.createReminder(
+              title: titleCtrl.text.trim(),
+              description: descCtrl.text.trim(),
+              priority: priority,
+              dueDate: DateTime.now().add(const Duration(days: 3)),
+              contactServerId: c.serverId,
+              contactLocalId: c.localId,
+              type: 'call',
+            );
             if (mounted) {
               Navigator.pop(ctx);
-              _showSnack('Task scheduled');
+              _showSnack('Follow-up call reminder saved and synced');
             }
           },
           child: Column(
@@ -432,6 +434,20 @@ class _ContactDetailsSheetState extends ConsumerState<ContactDetailsSheet> with 
                   label: 'Email',
                   color: const Color(0xFF7A5AF8),
                   onTap: () => _sendEmail(c.email),
+                  isDark: isDark,
+                ),
+                _buildActionButton(
+                  icon: LucideIcons.calendarPlus,
+                  label: 'Book',
+                  color: const Color(0xFF0284C7),
+                  onTap: () {
+                    showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      backgroundColor: Colors.transparent,
+                      builder: (_) => CreateBookingSheet(preselectedContact: c),
+                    );
+                  },
                   isDark: isDark,
                 ),
                 _buildActionButton(

@@ -5,6 +5,7 @@ import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
 import '../../../shared/components/app_button.dart';
 import '../../../shared/components/app_text_field.dart';
+import '../../../shared/components/app_logo.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -47,16 +48,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Logo & Header
-                Icon(
-                  Icons.business_center_rounded,
-                  size: 48,
-                  color: AppColors.primary,
-                ),
-                const SizedBox(height: 12),
-                Text(
-                  'ZetuCRM',
-                  style: AppTypography.h1(color: isDark ? Colors.white : AppColors.grey900),
-                  textAlign: TextAlign.center,
+                const Center(
+                  child: AppLogo(
+                    height: 48,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(

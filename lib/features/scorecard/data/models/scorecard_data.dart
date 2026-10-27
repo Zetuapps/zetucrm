@@ -57,6 +57,30 @@ class ScorecardMetricItem {
       return double.tryParse(val.toString());
     }
 
+    int parseInt(dynamic val, [int fallback = 0]) {
+      if (val == null) return fallback;
+      if (val is num) return val.toInt();
+      if (val is String) {
+        final parsed = int.tryParse(val);
+        if (parsed != null) return parsed;
+        final parsedDouble = double.tryParse(val);
+        if (parsedDouble != null) return parsedDouble.toInt();
+      }
+      return fallback;
+    }
+
+    int? parseNullableInt(dynamic val) {
+      if (val == null) return null;
+      if (val is num) return val.toInt();
+      if (val is String) {
+        final parsed = int.tryParse(val);
+        if (parsed != null) return parsed;
+        final parsedDouble = double.tryParse(val);
+        if (parsedDouble != null) return parsedDouble.toInt();
+      }
+      return null;
+    }
+
     bool? parseBool(dynamic val) {
       if (val == null) return null;
       if (val is bool) return val;
@@ -66,7 +90,7 @@ class ScorecardMetricItem {
     }
 
     return ScorecardMetricItem(
-      id: (json['id'] as num?)?.toInt() ?? 0,
+      id: parseInt(json['id']),
       title: json['title']?.toString() ?? '',
       description: json['description']?.toString(),
       timeframe: json['timeframe']?.toString() ?? 'daily',
@@ -76,18 +100,18 @@ class ScorecardMetricItem {
       targetOperator: json['target_operator']?.toString() ?? 'gte',
       targetValue: json['target_value']?.toString(),
       unitLabel: json['unit_label']?.toString(),
-      isUserSpecific: json['is_user_specific'] == true,
+      isUserSpecific: json['is_user_specific'] == true || json['is_user_specific'] == 1 || json['is_user_specific'] == '1',
       userId: json['user_id']?.toString(),
       assignedTo: json['assigned_to']?.toString(),
-      assignedUser: json['assigned_user'] is Map ? (json['assigned_user'] as Map<String, dynamic>) : null,
-      entryId: (json['entry_id'] as num?)?.toInt(),
+      assignedUser: json['assigned_user'] is Map ? Map<String, dynamic>.from(json['assigned_user'] as Map) : null,
+      entryId: parseNullableInt(json['entry_id']),
       currentValue: json['current_value'],
       valueBoolean: parseBool(json['value_boolean']),
       valueNumber: parseNum(json['value_number']),
       valueText: json['value_text']?.toString(),
       notes: json['notes']?.toString(),
-      isAchieved: json['is_achieved'] == true,
-      progressPercent: (json['progress_percent'] as num?)?.toInt() ?? 0,
+      isAchieved: json['is_achieved'] == true || json['is_achieved'] == 1 || json['is_achieved'] == '1',
+      progressPercent: parseInt(json['progress_percent']),
     );
   }
 
@@ -147,14 +171,26 @@ class HistoryDay {
   });
 
   factory HistoryDay.fromJson(Map<String, dynamic> json) {
+    int parseInt(dynamic val, [int fallback = 0]) {
+      if (val == null) return fallback;
+      if (val is num) return val.toInt();
+      if (val is String) {
+        final parsed = int.tryParse(val);
+        if (parsed != null) return parsed;
+        final parsedDouble = double.tryParse(val);
+        if (parsedDouble != null) return parsedDouble.toInt();
+      }
+      return fallback;
+    }
+
     return HistoryDay(
       date: json['date']?.toString() ?? '',
       dayName: json['day_name']?.toString() ?? '',
       dayFull: json['day_full']?.toString() ?? '',
-      isToday: json['is_today'] == true,
-      totalMetrics: (json['total_metrics'] as num?)?.toInt() ?? 0,
-      achievedMetrics: (json['achieved_metrics'] as num?)?.toInt() ?? 0,
-      completionRate: (json['completion_rate'] as num?)?.toInt() ?? 0,
+      isToday: json['is_today'] == true || json['is_today'] == 1 || json['is_today'] == '1',
+      totalMetrics: parseInt(json['total_metrics']),
+      achievedMetrics: parseInt(json['achieved_metrics']),
+      completionRate: parseInt(json['completion_rate']),
     );
   }
 }
@@ -187,8 +223,20 @@ class ScorecardData {
   });
 
   factory ScorecardData.fromJson(Map<String, dynamic> json) {
-    final rawMetrics = json['metrics'] as List? ?? [];
-    final workingDaysRaw = json['working_days'] as List? ?? [];
+    int parseInt(dynamic val, [int fallback = 0]) {
+      if (val == null) return fallback;
+      if (val is num) return val.toInt();
+      if (val is String) {
+        final parsed = int.tryParse(val);
+        if (parsed != null) return parsed;
+        final parsedDouble = double.tryParse(val);
+        if (parsedDouble != null) return parsedDouble.toInt();
+      }
+      return fallback;
+    }
+
+    final rawMetrics = (json['metrics'] as List? ?? []);
+    final workingDaysRaw = (json['working_days'] as List? ?? []);
 
     return ScorecardData(
       timeframe: json['timeframe']?.toString() ?? 'daily',
@@ -196,12 +244,15 @@ class ScorecardData {
       startDate: json['start_date']?.toString() ?? '',
       endDate: json['end_date']?.toString() ?? '',
       targetDate: json['target_date']?.toString() ?? '',
-      isWorkingDay: json['is_working_day'] != false,
+      isWorkingDay: json['is_working_day'] != false && json['is_working_day'] != 0 && json['is_working_day'] != '0',
       workingDays: workingDaysRaw.map((e) => e.toString().toLowerCase()).toList(),
-      totalMetrics: (json['total_metrics'] as num?)?.toInt() ?? 0,
-      achievedMetrics: (json['achieved_metrics'] as num?)?.toInt() ?? 0,
-      completionRate: (json['completion_rate'] as num?)?.toInt() ?? 0,
-      metrics: rawMetrics.map((m) => ScorecardMetricItem.fromJson(m as Map<String, dynamic>)).toList(),
+      totalMetrics: parseInt(json['total_metrics']),
+      achievedMetrics: parseInt(json['achieved_metrics']),
+      completionRate: parseInt(json['completion_rate']),
+      metrics: rawMetrics
+          .whereType<Map>()
+          .map((m) => ScorecardMetricItem.fromJson(Map<String, dynamic>.from(m)))
+          .toList(),
     );
   }
 

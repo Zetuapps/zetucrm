@@ -170,6 +170,7 @@ class _ChartOfAccountsTabState extends ConsumerState<ChartOfAccountsTab> {
     return Scaffold(
       backgroundColor: Colors.transparent,
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'chart_of_accounts_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(LucideIcons.plus, color: Colors.white),
         label: const Text('Add Account', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),

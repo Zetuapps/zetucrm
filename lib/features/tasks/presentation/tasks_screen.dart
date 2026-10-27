@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:drift/drift.dart' as drift;
 import '../../../core/sync/sync_provider.dart';
-import '../../../core/database/app_database.dart';
-import '../../../core/notifications/local_notification_service.dart';
+import '../data/tasks_repository.dart';
 import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_typography.dart';
 import '../../../shared/components/app_card.dart';
@@ -140,17 +138,9 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
                                 final newStatus = (val ?? false)
                                     ? 'completed'
                                     : 'pending';
-                                await (db.update(db.tasksTable)..where(
-                                      (t) => t.localId.equals(task.localId),
-                                    ))
-                                    .write(
-                                      TasksTableCompanion(
-                                        status: drift.Value(newStatus),
-                                        localUpdatedAt: drift.Value(
-                                          DateTime.now(),
-                                        ),
-                                      ),
-                                    );
+                                await ref
+                                    .read(tasksRepositoryProvider)
+                                    .updateStatus(task, newStatus);
                               },
                             ),
                             const SizedBox(width: 8),
@@ -225,6 +215,7 @@ class _TasksScreenState extends ConsumerState<TasksScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'tasks_fab',
         backgroundColor: AppColors.primary,
         icon: const Icon(Icons.add_task_rounded, color: Colors.white),
         label: Text('New Task', style: AppTypography.button()),
@@ -258,43 +249,14 @@ class _TaskFormSheetState extends ConsumerState<_TaskFormSheet> {
     final title = _titleCtrl.text.trim();
     if (title.isEmpty) return;
 
-    final db = ref.read(databaseProvider);
-
-    final entry = TasksTableCompanion.insert(
+    final repo = ref.read(tasksRepositoryProvider);
+    await repo.createReminder(
       title: title,
-      description: drift.Value(_descCtrl.text.trim()),
-      priority: drift.Value(_priority),
-      status: const drift.Value('pending'),
-      dueDate: drift.Value(_dueDate),
-      localUpdatedAt: DateTime.now(),
+      description: _descCtrl.text.trim().isNotEmpty ? _descCtrl.text.trim() : null,
+      priority: _priority,
+      dueDate: _dueDate,
+      type: 'call',
     );
-
-    final localId = await db.into(db.tasksTable).insert(entry);
-
-    // Schedule native OS local reminder alarm if due date is provided
-    if (_dueDate != null) {
-      await LocalNotificationService.scheduleTaskReminder(
-        id: localId,
-        title: 'Task Due: $title',
-        body: _descCtrl.text.trim().isNotEmpty
-            ? _descCtrl.text.trim()
-            : 'Reminder for your CRM task',
-        scheduledDate: _dueDate!,
-      );
-    }
-
-    // Queue sync
-    await db
-        .into(db.syncQueueTable)
-        .insert(
-          SyncQueueTableCompanion.insert(
-            entityType: 'task',
-            entityLocalId: localId,
-            operation: 'create',
-            payloadJson: '{"title": "$title", "priority": "$_priority"}',
-            createdAt: DateTime.now(),
-          ),
-        );
 
     if (mounted) Navigator.pop(context);
   }
