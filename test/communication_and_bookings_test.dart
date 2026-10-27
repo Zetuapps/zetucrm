@@ -29,6 +29,38 @@ void main() {
     });
   });
 
+  group('CommunicationUtils.forWhatsApp and reminder formatting', () {
+    test('extracts digits only for wa.me URL', () {
+      expect(CommunicationUtils.forWhatsApp('+255 712-345-678'), '255712345678');
+      expect(CommunicationUtils.forWhatsApp('0712345678'), '255712345678');
+      expect(CommunicationUtils.forWhatsApp(null), '');
+    });
+
+    test('formats booking reminder message correctly as requested', () {
+      final msg = CommunicationUtils.formatBookingReminderMessage(
+        guestName: 'John Doe',
+        eventTitle: 'Product Demo',
+        startAt: '2026-10-30 14:00:00.000',
+      );
+      expect(
+        msg,
+        'Hello John Doe, regarding our upcoming booking "Product Demo" on 2026-10-30 14:00...',
+      );
+    });
+
+    test('falls back to "Meeting" when event title is missing or empty', () {
+      final msg = CommunicationUtils.formatBookingReminderMessage(
+        guestName: 'Jane Smith',
+        eventTitle: null,
+        startAt: '2026-11-01 09:30:00.000',
+      );
+      expect(
+        msg,
+        'Hello Jane Smith, regarding our upcoming booking "Meeting" on 2026-11-01 09:30...',
+      );
+    });
+  });
+
   group('BookingModel serialization', () {
     test('correctly parses BookingModel from JSON', () {
       final json = {

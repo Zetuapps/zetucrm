@@ -4,6 +4,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:dio/dio.dart';
 import '../network/api_client.dart';
 import '../notifications/firebase_messaging_service.dart';
+import '../services/passkey_service.dart';
 
 class UserProfile {
   final String id;
@@ -12,6 +13,7 @@ class UserProfile {
   final String email;
   final String? phone;
   final String role;
+  final bool hasPasskey;
 
   UserProfile({
     required this.id,
@@ -20,6 +22,7 @@ class UserProfile {
     required this.email,
     this.phone,
     required this.role,
+    this.hasPasskey = false,
   });
 
   String get fullName => '$firstName $lastName'.trim();
@@ -33,6 +36,7 @@ class UserProfile {
       email: json['email'] ?? '',
       phone: json['phone']?.toString(),
       role: json['role'] ?? 'Sales Rep',
+      hasPasskey: json['has_passkey'] == true || json['passkey'] != null,
     );
   }
 }
@@ -153,6 +157,17 @@ class AuthNotifier extends Notifier<AuthState> {
 
           // Automatically sync FCM push notification device token
           FirebaseMessagingService.syncToken(apiClient);
+
+          // If this user has a passkey configured, keep their stored token & profile info updated
+          final currentToken = await _storage.read(key: 'sanctum_token');
+          if (currentToken != null) {
+            await PasskeyService.savePasskeySession(
+              userId: userData.id,
+              token: currentToken,
+              email: userData.email,
+              userName: userData.fullName,
+            );
+          }
           return;
         }
       } catch (_) {}
@@ -171,6 +186,7 @@ class AuthNotifier extends Notifier<AuthState> {
       if (res.statusCode == 200) {
         final token = res.data['token'] ?? res.data['access_token'];
         await _storage.write(key: 'sanctum_token', value: token);
+        PasskeyService.resetSessionPrompt();
         await checkLoginStatus();
         state = state.copyWith(isLoading: false);
         return true;
@@ -209,6 +225,7 @@ class AuthNotifier extends Notifier<AuthState> {
         final token = res.data['token'] ?? res.data['access_token'];
         if (token != null) {
           await _storage.write(key: 'sanctum_token', value: token.toString());
+          PasskeyService.resetSessionPrompt();
           await checkLoginStatus();
           state = state.copyWith(isLoading: false);
           return true;
@@ -234,6 +251,172 @@ class AuthNotifier extends Notifier<AuthState> {
     }
   }
 
+  /// Log in with device biometric passkey (Face ID, Touch ID, Fingerprint, or Device Screen Lock)
+  Future<bool> loginWithBiometricPasskey({String? userId, String? email}) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    try {
+      final targetUserId = userId ?? await PasskeyService.getLastPasskeyUserId() ?? 'default';
+      final targetEmail = email ?? await PasskeyService.getLastPasskeyEmail();
+
+      // 1. Prompt hardware biometric / device lock authentication
+      final authenticated = await PasskeyService.authenticateWithDevice(
+        reason: 'Authenticate with your device passkey to sign in to ZetuCRM',
+      );
+      if (!authenticated) {
+        state = state.copyWith(isLoading: false);
+        return false;
+      }
+
+      // 2. Retrieve the device passkey secret
+      final secret = await PasskeyService.getDevicePasskeySecret(targetUserId);
+
+      // If we have a secret and email, authenticate against backend database
+      if (secret != null && targetEmail != null && targetEmail.isNotEmpty) {
+        try {
+          final res = await apiClient.dio.post('/auth/passkey', data: {
+            'email': targetEmail,
+            'passkey': secret,
+          });
+
+          if (res.statusCode == 200 && res.data != null) {
+            final token = res.data['token'] ?? res.data['access_token'];
+            if (token != null) {
+              await _storage.write(key: 'sanctum_token', value: token.toString());
+              PasskeyService.resetSessionPrompt();
+              await checkLoginStatus();
+              state = state.copyWith(isLoading: false);
+              return true;
+            }
+          }
+        } on DioException catch (dioErr) {
+          if (dioErr.response?.statusCode == 422 ||
+              dioErr.response?.statusCode == 401 ||
+              dioErr.response?.statusCode == 403) {
+            final msg = dioErr.response?.data?['message'] ??
+                'Passkey validation failed. Please log in with password.';
+            state = state.copyWith(isLoading: false, errorMessage: msg);
+            return false;
+          }
+        }
+      }
+
+      // 3. Fallback to cached token for offline support
+      final cachedToken = await PasskeyService.getPasskeyToken(targetUserId);
+      if (cachedToken != null && cachedToken.isNotEmpty) {
+        await _storage.write(key: 'sanctum_token', value: cachedToken);
+        PasskeyService.resetSessionPrompt();
+        await checkLoginStatus();
+        if (state.isAuthenticated) {
+          state = state.copyWith(isLoading: false);
+          return true;
+        }
+      }
+
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Unable to sign in with passkey. Please sign in with your email and password.',
+      );
+      return false;
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Biometric passkey error: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
+  Future<bool> loginWithPasskey(String userId, String passkey, {String? email}) async {
+    state = state.copyWith(isLoading: true, errorMessage: null);
+    try {
+      final targetEmail = email ?? await PasskeyService.getLastPasskeyEmail();
+
+      // 1. Authenticate with backend API against users database
+      if (targetEmail != null && targetEmail.isNotEmpty) {
+        try {
+          final res = await apiClient.dio.post('/auth/passkey', data: {
+            'email': targetEmail,
+            'passkey': passkey.trim(),
+          });
+
+          if (res.statusCode == 200 && res.data != null) {
+            final token = res.data['token'] ?? res.data['access_token'];
+            if (token != null) {
+              await _storage.write(key: 'sanctum_token', value: token.toString());
+              PasskeyService.resetSessionPrompt();
+              await checkLoginStatus();
+
+              // Update local passkey cache with validated token
+              if (state.user != null) {
+                await PasskeyService.setPasskey(
+                  state.user!.id,
+                  passkey.trim(),
+                  email: state.user!.email,
+                  userName: state.user!.fullName,
+                  token: token.toString(),
+                );
+              }
+
+              state = state.copyWith(isLoading: false);
+              return true;
+            }
+          }
+        } on DioException catch (dioErr) {
+          // If backend returns explicit rejection (422, 401, 403), stop and show backend error
+          if (dioErr.response?.statusCode == 422 ||
+              dioErr.response?.statusCode == 401 ||
+              dioErr.response?.statusCode == 403) {
+            final msg = dioErr.response?.data?['message'] ??
+                'Invalid passkey. Please check and try again.';
+            state = state.copyWith(isLoading: false, errorMessage: msg);
+            return false;
+          }
+          // Network errors: fall through to local fallback
+        }
+      }
+
+      // 2. Offline / local fallback
+      final isValid = await PasskeyService.verifyPasskey(userId, passkey);
+      if (!isValid) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Incorrect passkey. Please try again.',
+        );
+        return false;
+      }
+
+      final token = await PasskeyService.getPasskeyToken(userId);
+      if (token == null || token.isEmpty) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'No active session token found. Please log in with password first.',
+        );
+        return false;
+      }
+
+      await _storage.write(key: 'sanctum_token', value: token);
+      PasskeyService.resetSessionPrompt();
+      await checkLoginStatus();
+
+      if (!state.isAuthenticated) {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: 'Session expired. Please log in with your email and password.',
+        );
+        return false;
+      }
+
+      state = state.copyWith(isLoading: false);
+      return true;
+    } catch (e) {
+      state = state.copyWith(
+        isLoading: false,
+        errorMessage: 'Passkey login failed: ${e.toString()}',
+      );
+      return false;
+    }
+  }
+
   Future<void> selectCompany(CompanyItem company) async {
     await _storage.write(
       key: 'active_company_id',
@@ -243,7 +426,9 @@ class AuthNotifier extends Notifier<AuthState> {
   }
 
   Future<void> logout() async {
-    await _storage.deleteAll();
+    await _storage.delete(key: 'sanctum_token');
+    await _storage.delete(key: 'active_company_id');
+    PasskeyService.resetSessionPrompt();
     try {
       await GoogleSignIn.instance.signOut();
     } catch (_) {}

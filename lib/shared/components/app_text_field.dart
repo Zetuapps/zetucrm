@@ -15,6 +15,7 @@ class AppTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
+  final FocusNode? focusNode;
 
   const AppTextField({
     super.key,
@@ -30,6 +31,7 @@ class AppTextField extends StatelessWidget {
     this.suffixIcon,
     this.onChanged,
     this.onTap,
+    this.focusNode,
   });
 
   @override
@@ -49,6 +51,7 @@ class AppTextField extends StatelessWidget {
         const SizedBox(height: 6),
         TextField(
           controller: controller,
+          focusNode: focusNode,
           obscureText: isPassword,
           readOnly: readOnly,
           maxLines: maxLines,

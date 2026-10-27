@@ -12,11 +12,19 @@ import '../../../shared/components/app_chip.dart';
 import '../../../shared/components/app_button.dart';
 import '../../../shared/components/app_logo.dart';
 
-class SettingsScreen extends ConsumerWidget {
+import '../../../core/services/passkey_service.dart';
+import '../../auth/presentation/passkey_setup_sheet.dart';
+
+class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<SettingsScreen> createState() => _SettingsScreenState();
+}
+
+class _SettingsScreenState extends ConsumerState<SettingsScreen> {
+  @override
+  Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
     final syncState = ref.watch(syncProvider);
     final currentThemeMode = ref.watch(themeProvider);
@@ -160,7 +168,7 @@ class SettingsScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1B59F8).withOpacity(0.12),
+                    color: const Color(0xFF1B59F8).withValues(alpha: 0.12),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: const Icon(LucideIcons.target, color: Color(0xFF1B59F8), size: 20),
@@ -185,6 +193,103 @@ class SettingsScreen extends ConsumerWidget {
                 const Icon(LucideIcons.chevronRight, size: 18),
               ],
             ),
+          ),
+          const SizedBox(height: 20),
+
+          // Security & Passkey Card
+          Text(
+            'SECURITY & ACCESS',
+            style: AppTypography.overline(
+              color: isDark ? AppColors.grey400 : AppColors.grey600,
+            ),
+          ),
+          const SizedBox(height: 8),
+          FutureBuilder<bool>(
+            future: PasskeyService.hasPasskey(user?.id ?? 'default'),
+            builder: (context, snapshot) {
+              final hasPasskey = (user?.hasPasskey == true) || (snapshot.data ?? false);
+              return AppCard(
+                onTap: () async {
+                  final result = await PasskeySetupSheet.show(
+                    context,
+                    userId: user?.id ?? 'default',
+                    canSkip: true,
+                  );
+                  if (result == true) {
+                    setState(() {});
+                  }
+                },
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: hasPasskey
+                            ? const Color(0xFF10B981).withValues(alpha: 0.12)
+                            : const Color(0xFF1B59F8).withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        LucideIcons.shieldCheck,
+                        color: hasPasskey
+                            ? const Color(0xFF10B981)
+                            : const Color(0xFF1B59F8),
+                        size: 20,
+                      ),
+                    ),
+                    const SizedBox(width: 14),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Text(
+                                'Biometric Passkey',
+                                style: AppTypography.subtitle2(
+                                  color: isDark ? Colors.white : AppColors.grey900,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 6,
+                                  vertical: 2,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: hasPasskey
+                                      ? const Color(0xFF10B981).withValues(alpha: 0.15)
+                                      : const Color(0xFFF59E0B).withValues(alpha: 0.15),
+                                  borderRadius: BorderRadius.circular(6),
+                                ),
+                                child: Text(
+                                  hasPasskey ? 'Active' : 'Not Configured',
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    color: hasPasskey
+                                        ? const Color(0xFF10B981)
+                                        : const Color(0xFFF59E0B),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 2),
+                          Text(
+                            hasPasskey
+                                ? 'Tap to update or re-verify biometric passkey'
+                                : 'Enable Face ID or Fingerprint for instant 1-tap sign-in',
+                            style: AppTypography.caption(color: AppColors.grey500),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(LucideIcons.chevronRight, size: 18),
+                  ],
+                ),
+              );
+            },
           ),
           const SizedBox(height: 20),
 
@@ -336,7 +441,7 @@ class SettingsScreen extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
             color: isSelected
-                ? activeColor.withOpacity(0.12)
+                ? activeColor.withValues(alpha: 0.12)
                 : (isDark ? const Color(0xFF1C2234) : const Color(0xFFF9FAFB)),
             borderRadius: BorderRadius.circular(14),
             border: Border.all(

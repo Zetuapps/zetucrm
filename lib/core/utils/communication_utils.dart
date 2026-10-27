@@ -32,6 +32,37 @@ class CommunicationUtils {
     return normalized.replaceAll(RegExp(r'[^0-9]'), '');
   }
 
+  /// Launch WhatsApp chat directly without requiring BuildContext
+  /// Ideal for push notification clicks or background event dispatching
+  static Future<bool> launchWhatsAppDirect(String? phone, String? prefilledMessage) async {
+    final cleanDigits = forWhatsApp(phone);
+    if (cleanDigits.length < 8) return false;
+
+    String urlStr = 'https://wa.me/$cleanDigits';
+    if (prefilledMessage != null && prefilledMessage.trim().isNotEmpty) {
+      urlStr += '?text=${Uri.encodeComponent(prefilledMessage.trim())}';
+    }
+
+    final uri = Uri.parse(urlStr);
+    try {
+      return await launchUrl(uri, mode: LaunchMode.externalApplication);
+    } catch (_) {
+      return false;
+    }
+  }
+
+  /// Format standard WhatsApp reminder message for upcoming meetings / bookings:
+  /// 'Hello ${b.guestName}, regarding our upcoming booking "${b.eventType?.title ?? 'Meeting'}" on ${b.startAt.toString().substring(0, 16)}...'
+  static String formatBookingReminderMessage({
+    required String guestName,
+    String? eventTitle,
+    required String startAt,
+  }) {
+    final title = (eventTitle != null && eventTitle.trim().isNotEmpty) ? eventTitle : 'Meeting';
+    final formattedTime = startAt.length >= 16 ? startAt.substring(0, 16) : startAt;
+    return 'Hello $guestName, regarding our upcoming booking "$title" on $formattedTime...';
+  }
+
   /// Launch WhatsApp chat with validated phone and optional pre-filled message
   static Future<bool> openWhatsApp({
     required BuildContext context,

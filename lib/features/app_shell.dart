@@ -14,6 +14,9 @@ import 'finance/presentation/finance_screen.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
 import 'bookings/presentation/bookings_screen.dart';
+import '../core/auth/auth_provider.dart';
+import '../core/services/passkey_service.dart';
+import 'auth/presentation/passkey_setup_sheet.dart';
 
 class AppShell extends ConsumerStatefulWidget {
   const AppShell({super.key});
@@ -24,6 +27,35 @@ class AppShell extends ConsumerStatefulWidget {
 
 class _AppShellState extends ConsumerState<AppShell> {
   int _currentIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _checkPasskeySetup();
+    });
+  }
+
+  Future<void> _checkPasskeySetup() async {
+    if (!mounted) return;
+    if (PasskeyService.hasPromptedThisSession) return;
+
+    final user = ref.read(authProvider).user;
+    final userId = user?.id ?? 'default';
+
+    final hasBackendPasskey = user?.hasPasskey ?? false;
+    final hasLocalPasskey = await PasskeyService.hasPasskey(userId);
+    final hasPasskey = hasBackendPasskey || hasLocalPasskey;
+
+    if (!hasPasskey && mounted) {
+      PasskeyService.markPromptedThisSession();
+      PasskeySetupSheet.show(
+        context,
+        userId: userId,
+        canSkip: true,
+      );
+    }
+  }
 
   final List<Widget> _pages = const [
     DashboardScreen(),

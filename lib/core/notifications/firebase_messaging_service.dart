@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'local_notification_service.dart';
 import 'notifications_provider.dart';
 import '../network/api_client.dart';
+import '../utils/communication_utils.dart';
 
 /// Top-level background message handler required by FirebaseMessaging.
 @pragma('vm:entry-point')
@@ -103,15 +104,18 @@ class FirebaseMessagingService {
       // Handle notification tapped when app opened from background
       FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
         debugPrint('[FirebaseMessaging] App opened from background via notification: ${message.data}');
-        _handleNotificationAction(message.data);
+        handleNotificationAction(message.data);
       });
 
       // Handle notification tapped when app launched from terminated state
       final initialMessage = await messaging.getInitialMessage();
       if (initialMessage != null) {
         debugPrint('[FirebaseMessaging] App launched from terminated state via notification: ${initialMessage.data}');
-        _handleNotificationAction(initialMessage.data);
+        handleNotificationAction(initialMessage.data);
       }
+
+      // Wire local notification clicks to the same handler
+      LocalNotificationService.onNotificationTapped = handleNotificationAction;
     } catch (e) {
       debugPrint('[FirebaseMessaging] Setup error: $e');
     }
@@ -159,9 +163,28 @@ class FirebaseMessagingService {
     }
   }
 
-  static void _handleNotificationAction(Map<String, dynamic> data) {
+  /// Public action handler for both push notifications and local notification banners
+  static void handleNotificationAction(Map<String, dynamic> data) {
     final type = data['type']?.toString();
-    debugPrint('[FirebaseMessaging] Routing notification type: $type');
-    // Navigation or action handler can be expanded here
+    final action = data['action']?.toString();
+    debugPrint('[FirebaseMessaging] Routing notification type: $type | action: $action');
+
+    // Meeting / Booking reminder clicked: open WhatsApp directly with prefilled message
+    if (type == 'booking_reminder' || action == 'whatsapp_reminder') {
+      final phone = data['guest_phone']?.toString();
+      final guestName = data['guest_name']?.toString() ?? 'Guest';
+      final eventTitle = data['event_type_title']?.toString() ?? 'Meeting';
+      final startAt = data['start_at']?.toString() ?? '';
+
+      if (phone != null && phone.isNotEmpty) {
+        final message = CommunicationUtils.formatBookingReminderMessage(
+          guestName: guestName,
+          eventTitle: eventTitle,
+          startAt: startAt,
+        );
+        debugPrint('[FirebaseMessaging] Opening WhatsApp for $guestName ($phone)...');
+        CommunicationUtils.launchWhatsAppDirect(phone, message);
+      }
+    }
   }
 }

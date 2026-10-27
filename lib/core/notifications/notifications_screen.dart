@@ -4,7 +4,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'package:intl/intl.dart';
 import 'notifications_provider.dart';
 import '../../features/bookings/data/bookings_repository.dart';
+import '../../features/bookings/data/models/booking_model.dart';
 import '../../features/bookings/presentation/booking_details_sheet.dart';
+import '../utils/communication_utils.dart';
 
 class NotificationsScreen extends ConsumerStatefulWidget {
   const NotificationsScreen({super.key});
@@ -244,12 +246,54 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
           if (!isRead) {
             notifier.markAsRead(notification.id);
           }
+          final isBookingReminder = notification.type == 'booking_reminder' ||
+              notification.data['action'] == 'whatsapp_reminder';
           final bookingId = notification.data['booking_id']?.toString();
+
+          if (isBookingReminder) {
+            String guestPhone = notification.data['guest_phone']?.toString() ?? '';
+            String guestName = notification.data['guest_name']?.toString() ?? 'Guest';
+            String eventTitle = notification.data['event_type_title']?.toString() ?? 'Meeting';
+            String startAt = notification.data['start_at']?.toString() ?? '';
+            BookingModel? booking;
+
+            if (bookingId != null && bookingId.isNotEmpty) {
+              try {
+                final repo = ref.read(bookingsRepositoryProvider);
+                final fetched = await repo.getBooking(bookingId);
+                booking = fetched;
+                guestPhone = fetched.guestPhone ?? guestPhone;
+                guestName = fetched.guestName;
+                eventTitle = fetched.eventType?.title ?? eventTitle;
+                startAt = fetched.startAt.toString();
+              } catch (_) {}
+            }
+
+            if (guestPhone.isNotEmpty) {
+              final message = CommunicationUtils.formatBookingReminderMessage(
+                guestName: guestName,
+                eventTitle: eventTitle,
+                startAt: startAt,
+              );
+              await CommunicationUtils.launchWhatsAppDirect(guestPhone, message);
+            }
+
+            if (booking != null && mounted) {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                backgroundColor: Colors.transparent,
+                builder: (_) => BookingDetailsSheet(booking: booking!),
+              );
+            }
+            return;
+          }
+
           if (bookingId != null && bookingId.isNotEmpty) {
             try {
               final repo = ref.read(bookingsRepositoryProvider);
               final booking = await repo.getBooking(bookingId);
-              if (context.mounted) {
+              if (mounted) {
                 showModalBottomSheet(
                   context: context,
                   isScrollControlled: true,
@@ -335,6 +379,49 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
                         color: isDark ? Colors.white70 : const Color(0xFF475467),
                       ),
                     ),
+                    if (notification.type == 'booking_reminder' ||
+                        notification.data['action'] == 'whatsapp_reminder') ...[
+                      const SizedBox(height: 8),
+                      GestureDetector(
+                        onTap: () {
+                          final phone = notification.data['guest_phone']?.toString();
+                          final guestName = notification.data['guest_name']?.toString() ?? 'Guest';
+                          final eventTitle = notification.data['event_type_title']?.toString() ?? 'Meeting';
+                          final startAt = notification.data['start_at']?.toString() ?? '';
+                          final message = CommunicationUtils.formatBookingReminderMessage(
+                            guestName: guestName,
+                            eventTitle: eventTitle,
+                            startAt: startAt,
+                          );
+                          CommunicationUtils.launchWhatsAppDirect(phone, message);
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF25D366).withOpacity(0.12),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: const Color(0xFF25D366).withOpacity(0.35),
+                            ),
+                          ),
+                          child: const Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(LucideIcons.messageCircle, size: 14, color: Color(0xFF25D366)),
+                              SizedBox(width: 6),
+                              Text(
+                                'Chat with Guest on WhatsApp',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF25D366),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 8),
                     Text(
                       _formatRelativeTime(notification.createdAt),
@@ -402,8 +489,8 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   IconData _getNotificationIcon(String type) {
-    if (type.contains('booking')) {
-      return LucideIcons.calendar;
+    if (type == 'booking_reminder' || type.contains('booking')) {
+      return LucideIcons.calendarClock;
     } else if (type.contains('task')) {
       return LucideIcons.checkSquare;
     } else if (type.contains('scorecard')) {
@@ -419,7 +506,9 @@ class _NotificationsScreenState extends ConsumerState<NotificationsScreen> {
   }
 
   Color _getNotificationColor(String type) {
-    if (type.contains('booking')) {
+    if (type == 'booking_reminder') {
+      return const Color(0xFF25D366); // WhatsApp green
+    } else if (type.contains('booking')) {
       return const Color(0xFF0284C7); // Sky blue
     } else if (type.contains('task')) {
       return const Color(0xFF1B59F8); // Blue
